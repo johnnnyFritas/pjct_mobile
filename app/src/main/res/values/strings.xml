@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">pjct</string>
+    <string name="entrar">Entrar</string>
+    <string name="insira_seu_e_mail">Insira seu e-mail</string>
+    <string name="insira_sua_senha">Insira sua senha</string>
+    <string name="esqueci_minha_senha">Esqueci minha senha</string>
+    <string name="crie_sua_conta">Crie sua conta</string>
+    <string name="logo_do_aplicativo_rotina_uma_logo_animada_com_um_rel_gio_a_esquerda_um_escudo_cruz_em_um_livro_aberto_a_direita_um_calend_rio_marcado">Logo do aplicativo Rotina, uma logo animada com um relógio a esquerda, um escudo, cruz em um livro aberto, a direita um calendário marcado.</string>
+    <string name="NomeRegistrar">Nome</string>
+    <string name="Email">E-mail</string>
+    <string name="Senha">Senha</string>
+    <string name="CriarConta">Criar Conta</string>
+    <string name="crie_sua_conta_registrar">CRIE SUA CONTA</string>
 </resources>

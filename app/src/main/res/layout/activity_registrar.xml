@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo_geral">
+    
+    <ImageView
+        android:id="@+id/ImageViewActivityRegistrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/logo_do_aplicativo_rotina_uma_logo_animada_com_um_rel_gio_a_esquerda_um_escudo_cruz_em_um_livro_aberto_a_direita_um_calend_rio_marcado"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/logo_mini"/>
+
+    <TextView
+        android:id="@+id/TextViewActivityRegistrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="75dp"
+        android:layout_marginTop="100dp"
+        android:textAlignment="center"
+        android:textColor="@color/text_view_activity_registrar"
+        android:textSize="30sp"
+        android:text="@string/crie_sua_conta_registrar"
+        android:fontFamily="@font/poppins_bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/card_activity_main"
+        android:paddingVertical="25dp"
+        android:layout_marginHorizontal="20dp">
+
+        <EditText
+            android:id="@+id/EditTextNameActivityRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="text"
+            android:textSize="18sp"
+            android:letterSpacing=".1"
+            android:hint="@string/NomeRegistrar"
+            android:textColorHint="@color/edit_text_activity_main"
+            android:textColor="@color/edit_text_activity_main"
+            android:fontFamily="@font/poppins_m"
+            android:background="@drawable/fundo_edit_text_activity_main"
+            android:layout_marginHorizontal="25dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:drawableEnd="@drawable/logo_nome_registrar"/>
+
+        <TextView
+            android:id="@+id/TextViewActivityRegistrar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:layout_marginHorizontal="25dp"
+            android:textColor="@color/text_view_activity_registrar1"
+            android:fontFamily="@font/poppins_regular"/>
+
+        <EditText
+            android:id="@+id/EditTextTextEmailAddressActivityRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="textEmailAddress"
+            android:textSize="18sp"
+            android:letterSpacing=".1"
+            android:hint="@string/Email"
+            android:layout_marginTop="20dp"
+            android:textColorHint="@color/edit_text_activity_main"
+            android:textColor="@color/edit_text_activity_main"
+            android:fontFamily="@font/poppins_m"
+            android:background="@drawable/fundo_edit_text_activity_main"
+            android:layout_marginHorizontal="25dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:drawableEnd="@drawable/logo_email_registrar"/>
+
+        <TextView
+            android:id="@+id/TextViewActivityRegistrar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:layout_marginHorizontal="25dp"
+            android:textColor="@color/text_view_activity_registrar1"
+            android:fontFamily="@font/poppins_regular"/>
+
+        <EditText
+            android:id="@+id/EditTextTextPasswordActivityRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="textPassword"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"
+            android:letterSpacing=".1"
+            android:hint="@string/Senha"
+            android:textColorHint="@color/edit_text_activity_main"
+            android:textColor="@color/edit_text_activity_main"
+            android:fontFamily="@font/poppins_m"
+            android:background="@drawable/fundo_edit_text_activity_main"
+            android:layout_marginHorizontal="25dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:drawableEnd="@drawable/logo_senha_registrar"/>
+
+        <TextView
+            android:id="@+id/TextViewActivityRegistrar3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:layout_marginHorizontal="25dp"
+            android:textColor="@color/text_view_activity_registrar1"
+            android:fontFamily="@font/poppins_regular"/>
+
+        <Button
+            android:id="@+id/ButtonActivityRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxWidth="320dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="30dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/fundo_button_activity_main"
+            android:textSize="28sp"
+            android:text="@string/CriarConta"
+            android:letterSpacing=".1"
+            android:fontFamily="@font/poppins_bold"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
