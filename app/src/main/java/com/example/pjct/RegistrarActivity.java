@@ -3,6 +3,7 @@ package com.example.pjct;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class RegistrarActivity extends AppCompatActivity {
     EditText editTextNameActivityRegistrar, editTextTextEmailAddressActivityRegistrar, editTextTextPasswordActivityRegistrar;
     TextView textViewAcitivityRegistrar1, textViewAcitivityRegistrar2, textViewAcitivityRegistrar3;
+    Button buttonActivityRegistrar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,7 @@ public class RegistrarActivity extends AppCompatActivity {
                     checks.add(0, true);
                 }else {
                     textViewAcitivityRegistrar1.setText("");
-                    checks.add(false);
+                    checks.add(0, false);
                 }
             }
         });
@@ -97,11 +99,11 @@ public class RegistrarActivity extends AppCompatActivity {
             String email = editTextTextEmailAddressActivityRegistrar.getText().toString();
             if(!hasFocus) {
                 if (email.isBlank() || email.length() < 5 || !email.contains("@")) {
-                    textViewAcitivityRegistrar2.setText("Por favor, preencha um nome válido.");
+                    textViewAcitivityRegistrar2.setText("Por favor, preencha um e-mail válido.");
                     checks.add(1, true);
                 }else {
                     textViewAcitivityRegistrar2.setText("");
-                    checks.add(false);
+                    checks.add(1, false);
                 }
             }
         });
@@ -110,16 +112,21 @@ public class RegistrarActivity extends AppCompatActivity {
             String password = editTextTextPasswordActivityRegistrar.getText().toString();
             if(!hasFocus) {
                 if (password.isBlank() || password.length() < 8) {
-                    textViewAcitivityRegistrar3.setText("Por favor, preencha um nome válido.");
+                    textViewAcitivityRegistrar3.setText("Por favor, preencha uma senha válida.");
                     checks.add(2, true);
                 }else {
                     textViewAcitivityRegistrar3.setText("");
-                    checks.add(false);
+                    checks.add(2, false);
                 }
             }
         });
 
         //Buscar cliente no banco de dados firebase
+        buttonActivityRegistrar.setOnClickListener(v -> {
+            if(!checks.contains(true)) {
+
+            }
+        });
 
     }
 
