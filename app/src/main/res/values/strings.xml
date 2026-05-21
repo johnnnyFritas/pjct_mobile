@@ -6,4 +6,12 @@
     <string name="password_forgotten"><u>Esqueci minha senha</u></string>
     <string name="login">Entrar</string>
     <string name="register"><u>Crie sua conta</u></string>
+    <string name="register_title">CRIE SUA CONTA</string>
+    <string name="maintenance">Em construção…</string>
+    <string name="maintenance_1">Para voltar ao login&#10;clique na logo.</string>
+    <string name="name_register">Nome</string>
+    <string name="email_register">E-mail</string>
+    <string name="password_register">Senha</string>
+    <string name="create_account">Criar Conta</string>
+    <string name="back_to_login"><u>Voltar ao login</u></string>
 </resources>

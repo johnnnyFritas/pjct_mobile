@@ -1,14 +1,13 @@
 package com.tripleJTec.rotinaplus.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,13 +44,26 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
         //funções
-        verifyEdtTxtEmail(edtTxtEmail);
+        //define um listener de edição de texto para verificar se tem conteúdo no input de e-mail, se tiver adiciona drawable de icone à direita para apagar tudo com clique.
+        setEdtTxtNameOnTextChangedListener(edtTxtEmail);
+
+        //define um listener de clique no drawable de icone à direita no input de e-mail. Ao clicar apaga o conteúdo do input e-mail.
         setEmailIconClickListener(edtTxtEmail);
-        setPassVisibilityIconClickListener(edtTxtPass);
+
+        //define um listener de clique no drawable de icone à direita no input de senha. Ao clicar ele mostra a senha e muda o icone. Ao clicar novamente, esconde a senha e muda o icone.
+        setPassIconClickListener(edtTxtPass);
+
+        //define um listener de clique na view. Ao clicar leva para a página de esqueci minha senha.
+        setGoToForgottenPassClickListener(txtPassForgotten);
+
+        //define um listener de clique na view. Ao clicar leva para a página de registro.
+        setGoToRegisterClickListener(txtRegister);
+
+        //define um listener de clique no botão. Ao clicar tenta autenticar com o BD. Se tiver sucesso leva o usuário para a página de home. Se não informa que não conseguiu.
+        setBtnLoginListener(btnLogin);
     }
 
-    //verifica se tem texto para e-mail, se tiver adiciona drawable de icone para apagar tudo com clique.
-    protected void verifyEdtTxtEmail(EditText edtTxtEmail) {
+    protected void setEdtTxtNameOnTextChangedListener(EditText edtTxtEmail) {
         edtTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -70,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //verifica o click no drawable de icone para apagar conteúdo do e-mail.
     @SuppressLint("ClickableViewAccessibility")
     protected void setEmailIconClickListener(EditText edtTxtEmail) {
         edtTxtEmail.setOnTouchListener( (view, motionEvent) -> {
@@ -108,9 +119,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //verifica o click no drawable de icone para mostrar/esconder conteúdo da senha.
     @SuppressLint("ClickableViewAccessibility")
-    protected void setPassVisibilityIconClickListener(EditText edtTxtPass) {
+    protected void setPassIconClickListener(EditText edtTxtPass) {
         edtTxtPass.setOnTouchListener( (view, motionEvent) -> {
 
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -158,6 +168,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             return false;
+        });
+    }
+
+    protected void setGoToForgottenPassClickListener(TextView txtPassForgotten) {
+        txtPassForgotten.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ForgottenPassActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    protected void setGoToRegisterClickListener(TextView txtRegister) {
+        txtRegister.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    protected void setBtnLoginListener(Button btnLogin) {
+        btnLogin.setOnClickListener(view -> {
+
         });
     }
 }

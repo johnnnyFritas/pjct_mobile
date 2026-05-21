@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_light_1"
+    android:paddingVertical="35dp">
+
+    <ImageView
+        android:id="@+id/logoRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/logo_description"
+        android:src="@drawable/logo_register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtCreateAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/logoRegister"
+        app:layout_constraintBottom_toTopOf="@+id/layoutRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/poppins_bold"
+        android:letterSpacing=".1"
+        android:textColor="@color/blue_light_3"
+        android:text="@string/register_title"
+        android:layout_marginTop="25dp"/>
+
+    <LinearLayout
+        android:id="@+id/layoutRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtCreateAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="10dp"
+        android:orientation="vertical"
+        android:layout_marginTop="25dp">
+
+        <EditText
+            android:id="@+id/edtTxtNameRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="@string/name_register"
+            android:textColorHint="@color/gray_light_1"
+            android:textSize="18sp"
+            android:background="@drawable/shape_edt_txt_main"
+            android:autofillHints="emailAddress"
+            android:padding="20dp"
+            android:letterSpacing=".1"
+            android:drawableEnd="@drawable/icon_profile"/>
+
+        <TextView
+            android:id="@+id/txtNameWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="7dp"
+            android:letterSpacing=".1"/>
+
+        <EditText
+            android:id="@+id/edtTxtEmailRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="@string/email_register"
+            android:textColorHint="@color/gray_light_1"
+            android:textSize="18sp"
+            android:background="@drawable/shape_edt_txt_main"
+            android:autofillHints="emailAddress"
+            android:padding="20dp"
+            android:layout_marginTop="25dp"
+            android:letterSpacing=".1"
+            android:drawableEnd="@drawable/icon_email"/>
+
+        <TextView
+            android:id="@+id/txtEmailWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="7dp"
+            android:letterSpacing=".1"/>
+
+        <EditText
+            android:id="@+id/edtTxtPassRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="@string/password_register"
+            android:textColorHint="@color/gray_light_1"
+            android:textSize="18sp"
+            android:background="@drawable/shape_edt_txt_main"
+            android:autofillHints="password"
+            android:padding="20dp"
+            android:layout_marginTop="25dp"
+            android:letterSpacing=".1"
+            android:drawableEnd="@drawable/icon_show_password"/>
+
+        <TextView
+            android:id="@+id/txtPassWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="7dp"
+            android:letterSpacing=".1"/>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingVertical="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="@string/create_account"
+            android:fontFamily="@font/poppins_bold"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_main"
+            android:letterSpacing=".1"/>
+
+        <TextView
+            android:id="@+id/txtBackToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="@string/back_to_login"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:letterSpacing=".1" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
