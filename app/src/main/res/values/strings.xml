@@ -14,4 +14,12 @@
     <string name="password_register">Senha</string>
     <string name="create_account">Criar Conta</string>
     <string name="back_to_login"><u>Voltar ao login</u></string>
+    <string name="title_home">Olá,&#10;%s!</string>
+    <string name="img_create_routine">Um relógio azul e branco, uma prancheta com tarefas marcadas como completa e um lápis amarelo com borracha azul escrevendo na mesma prancheta ao fundo tem cores azuis em formas redondas a direita e cores amarelas em formas redondas a esquerda.</string>
+    <string name="title_create_routine">Criar nova rotina</string>
+    <string name="txt_create_routine">Nova rotina</string>
+    <string name="img_my_routines">Um relógio azul e branco, um calendário com uma seta apontando para os dois lados e uma mini prancheta a direita com tarefas escritas. O fundo tem cores azuis em formatos redondo.</string>
+    <string name="title_my_routines">Minhas rotinas</string>
+    <string name="txt_my_routines">Ver rotinas</string>
+    <string name="title_current_routines">Rotinas recentes</string>
 </resources>
