@@ -11,29 +11,34 @@ import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.tripleJTec.rotinaplus.R;
+import com.tripleJTec.rotinaplus.activities.database.BancoDeDados;
 
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edtTxtName, edtTxtEmail, edtTxtPass;
-
     TextView txtNameWarning, txtEmailWarning, txtPassWarning, txtBackToLogin;
-
     Button btnRegister;
-
     Boolean togglePassVisibility = false;
+
+    // Instância do banco de dados
+    BancoDeDados dbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //iniciando views
+        // Inicializa o banco de dados
+        dbHelper = new BancoDeDados(this);
+
+        // Iniciando views
         edtTxtName = findViewById(R.id.edtTxtNameRegister);
         edtTxtEmail = findViewById(R.id.edtTxtEmailRegister);
         edtTxtPass = findViewById(R.id.edtTxtPassRegister);
@@ -45,18 +50,42 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnRegister = findViewById(R.id.btnRegister);
 
-        //funções
-        //define um listener de edição de texto para verificar se tem conteúdo no input de nome, se tiver remove o drawable de icone à direita.
+        // Funções
         setEdtTxtNameOnTextChangedListener(edtTxtName);
-
-        //define um listener de edição de texto para verificar se tem conteúdo no input de e-mail, se tiver remove o drawable de icone à direita.
         setEdtTxtEmailOnTextChangedListener(edtTxtEmail);
-
-        //define um listener de clique no drawable de icone à direita no input de senha. Ao clicar ele mostra a senha e muda o icone. Ao clicar novamente, esconde a senha e muda o icone.
         setPassIconClickListener(edtTxtPass);
-
-        //define um listener de clique na view. Ao clicar leva o usuário para a página de login.
         setGoToLoginClickListener(txtBackToLogin);
+
+        // Define o listener para o botão de registro
+        setBtnRegisterOnClickListener(btnRegister);
+    }
+
+    protected void setBtnRegisterOnClickListener(Button btnRegister) {
+        btnRegister.setOnClickListener(view -> {
+            // Captura e limpa os textos digitados
+            String nome = edtTxtName.getText().toString().trim();
+            String email = edtTxtEmail.getText().toString().trim();
+            String senha = edtTxtPass.getText().toString().trim();
+
+            // Validação simples
+            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Tenta salvar no banco de dados
+            boolean sucesso = dbHelper.inserirUsuario(nome, email, senha);
+
+            if (sucesso) {
+                Toast.makeText(RegisterActivity.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
+                // Retorna para a tela de login
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(RegisterActivity.this, "Erro: Este e-mail já está cadastrado.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     protected void setEdtTxtNameOnTextChangedListener(EditText edtTxtName) {
@@ -114,32 +143,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (motionEvent.getX() >= initialCompoundWidth) {
 
-                    //verifica se o toggle está true ou false.
                     if (!togglePassVisibility) {
-
-                        //define o input como text password visible
                         edtTxtPass.setInputType(145);
-
-                        //ao alterar o input type na linha anterior, a fonte reseta para a fonte padrão (não foi identificado o motivo). Para isso o código abaixo garante que a view tenha a fonte original do projeto.
                         Typeface typeface = ResourcesCompat.getFont(view.getContext(), R.font.poppins_medium);
                         edtTxtPass.setTypeface(typeface);
-
-                        //define o icone de senha visivel
                         edtTxtPass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_not_show_password, 0);
-
-                        //alterna toggle
                         togglePassVisibility = true;
                     } else {
-
-                        //define o input como text password invisible
                         edtTxtPass.setInputType(129);
-
                         Typeface typeface = ResourcesCompat.getFont(view.getContext(), R.font.poppins_medium);
                         edtTxtPass.setTypeface(typeface);
-
-                        //define o icone de senha invisivel
                         edtTxtPass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_show_password, 0);
-
                         togglePassVisibility = false;
                     }
                     return true;
