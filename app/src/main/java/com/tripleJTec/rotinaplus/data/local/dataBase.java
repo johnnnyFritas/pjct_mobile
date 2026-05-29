@@ -1,18 +1,21 @@
-package com.tripleJTec.rotinaplus.activities.database;
+package com.tripleJTec.rotinaplus.data.local;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
-public class BancoDeDados extends SQLiteOpenHelper {
+
+import com.tripleJTec.rotinaplus.domain.model.User;
+
+public class dataBase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "RotinaPlusDB";
     // Mudamos a versão para 2. Isso avisa ao Android que a estrutura mudou
     // e aciona o método onUpgrade para recriar a tabela.
     private static final int DATABASE_VERSION = 2;
 
-    public BancoDeDados(Context context) {
+    public dataBase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -35,33 +38,46 @@ public class BancoDeDados extends SQLiteOpenHelper {
     }
 
     // Atualizamos o método para receber os três parâmetros
-    public boolean inserirUsuario(String nome, String email, String senha) {
+    public boolean insertUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("nome", nome);
-        values.put("email", email);
-        values.put("senha", senha);
+        values.put("nome", user.getNome());
+        values.put("email", user.getEmail());
+        values.put("senha", user.getSenha());
 
-        long resultado = db.insert("usuarios", null, values);
-        return resultado != -1;
+        long result = db.insert("usuarios", null, values);
+        return result != -1;
     }
 
-    public boolean checarLogon(String email, String senha) {
+    public User getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Consulta para verificar se existe o e-mail e a senha informados
-        String query = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{email, senha});
+        String query = "SELECT * FROM usuarios WHERE email = ?";
 
-        // Se o cursor encontrar pelo menos uma linha, significa que as credenciais estão corretas
-        boolean existe = cursor.getCount() > 0;
+        Cursor cursor = db.rawQuery(query, new String[]{email});
 
-        cursor.close(); // Sempre feche o cursor para evitar vazamento de memória
-        return existe;
+        if (cursor.getCount() == 1) {
+            if (cursor.moveToFirst()) {
+                int idId = cursor.getColumnIndex("id");
+                int nomeId = cursor.getColumnIndex("nome");
+                int emailId = cursor.getColumnIndex("email");
+                int senhaId = cursor.getColumnIndex("senha");
+
+                String id = cursor.getString(idId);
+                String nome = cursor.getString(nomeId);
+                email = cursor.getString(emailId);
+                String senha = cursor.getString(senhaId);
+
+                return new User(id, nome, email, senha);
+            }
+        }
+
+        cursor.close();
+        return null;
     }
 
-    public void imprimirTodosOsUsuarios() {
+    public void getAllUsers() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Puxa todos os registros da tabela usuarios

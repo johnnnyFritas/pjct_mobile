@@ -1,4 +1,4 @@
-package com.tripleJTec.rotinaplus.activities;
+package com.tripleJTec.rotinaplus.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;

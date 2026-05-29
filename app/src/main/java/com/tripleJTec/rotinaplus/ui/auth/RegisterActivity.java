@@ -1,4 +1,4 @@
-package com.tripleJTec.rotinaplus.activities;
+package com.tripleJTec.rotinaplus.ui.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,7 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.tripleJTec.rotinaplus.R;
-import com.tripleJTec.rotinaplus.activities.database.BancoDeDados;
+import com.tripleJTec.rotinaplus.data.local.dataBase;
+import com.tripleJTec.rotinaplus.domain.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     Boolean togglePassVisibility = false;
 
     // Instância do banco de dados
-    BancoDeDados dbHelper;
+    dataBase dbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // Inicializa o banco de dados
-        dbHelper = new BancoDeDados(this);
+        dbHelper = new dataBase(this);
 
         // Iniciando views
         edtTxtName = findViewById(R.id.edtTxtNameRegister);
@@ -73,17 +74,28 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // Tenta salvar no banco de dados
-            boolean sucesso = dbHelper.inserirUsuario(nome, email, senha);
+            //Cria um objeto do tipo user para inserir no bd
+            //id null pois o banco de dados cria o ID sozinho
+            User user = new User(null, nome, email, senha);
 
-            if (sucesso) {
-                Toast.makeText(RegisterActivity.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
-                // Retorna para a tela de login
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+            //verifica se o usuario ja esta registrado
+            User userCheck = dbHelper.getUser(email);
+
+            if (userCheck == null) {
+                // Tenta salvar no banco de dados
+                boolean sucesso = dbHelper.insertUser(user);
+
+                if (sucesso) {
+                    Toast.makeText(RegisterActivity.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
+                    // Retorna para a tela de login
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Erro: Este e-mail já está cadastrado.", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(RegisterActivity.this, "Erro: Este e-mail já está cadastrado.", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Erro: Usuário já cadastrado.", Toast.LENGTH_LONG).show();
             }
         });
     }

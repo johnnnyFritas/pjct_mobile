@@ -1,4 +1,4 @@
-package com.tripleJTec.rotinaplus.activities;
+package com.tripleJTec.rotinaplus.ui.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast; // Adicionado para exibir as mensagens na tela
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +19,9 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.tripleJTec.rotinaplus.R;
 
-import android.util.Log;
-import com.tripleJTec.rotinaplus.activities.database.BancoDeDados;
+import com.tripleJTec.rotinaplus.domain.model.User;
+import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
+import com.tripleJTec.rotinaplus.data.local.dataBase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean togglePassVisibility = false;
 
     // Declarando o banco de dados no escopo da classe para poder acessá-lo nos listeners
-    BancoDeDados dbHelper;
+    dataBase dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Instancia o banco de dados passando o contexto atual (this)
-        dbHelper = new BancoDeDados(this);
+        dbHelper = new dataBase(this);
 
-        dbHelper.imprimirTodosOsUsuarios();
+        dbHelper.getAllUsers();
         edtTxtEmail = findViewById(R.id.edtTxtEmailLogin);
         // Iniciando views
         edtTxtEmail = findViewById(R.id.edtTxtEmailLogin);
@@ -166,17 +167,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Checa as credenciais no banco de dados
-            boolean loginValido = dbHelper.checarLogon(email, senha);
+            User user = dbHelper.getUser(email);
 
-            if (loginValido) {
-                Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+            //verifica se tem usuário no BD
+            if (user != null) {
+                //verifica senha do usuário
+                if (senha.equals(user.getSenha())) {
+                    Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
 
-                // TODO: Quando você criar a tela principal da rotina, descomente e adapte as linhas abaixo:
-                // Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                // startActivity(intent);
-                // finish();
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    intent.putExtra("email", user.getEmail());
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(MainActivity.this, "Senha incorreta!", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(MainActivity.this, "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "E-mail incorreto! (conta não encontrada)", Toast.LENGTH_LONG).show();
             }
         });
     }
