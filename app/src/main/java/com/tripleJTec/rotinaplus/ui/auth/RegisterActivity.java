@@ -2,10 +2,12 @@ package com.tripleJTec.rotinaplus.ui.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -18,8 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.tripleJTec.rotinaplus.R;
-import com.tripleJTec.rotinaplus.data.local.dataBase;
-import com.tripleJTec.rotinaplus.domain.model.User;
+import com.tripleJTec.rotinaplus.data.DataBase;
+import com.tripleJTec.rotinaplus.model.User;
+import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -27,9 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView txtNameWarning, txtEmailWarning, txtPassWarning, txtBackToLogin;
     Button btnRegister;
     Boolean togglePassVisibility = false;
-
-    // Instância do banco de dados
-    dataBase dbHelper;
+    DataBase dbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // Inicializa o banco de dados
-        dbHelper = new dataBase(this);
+        dbHelper = new DataBase(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_shared_preferences_name), MODE_PRIVATE);
 
         // Iniciando views
         edtTxtName = findViewById(R.id.edtTxtNameRegister);
@@ -56,48 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         setEdtTxtEmailOnTextChangedListener(edtTxtEmail);
         setPassIconClickListener(edtTxtPass);
         setGoToLoginClickListener(txtBackToLogin);
-
-        // Define o listener para o botão de registro
-        setBtnRegisterOnClickListener(btnRegister);
-    }
-
-    protected void setBtnRegisterOnClickListener(Button btnRegister) {
-        btnRegister.setOnClickListener(view -> {
-            // Captura e limpa os textos digitados
-            String nome = edtTxtName.getText().toString().trim();
-            String email = edtTxtEmail.getText().toString().trim();
-            String senha = edtTxtPass.getText().toString().trim();
-
-            // Validação simples
-            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-                Toast.makeText(RegisterActivity.this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            //Cria um objeto do tipo user para inserir no bd
-            //id null pois o banco de dados cria o ID sozinho
-            User user = new User(null, nome, email, senha);
-
-            //verifica se o usuario ja esta registrado
-            User userCheck = dbHelper.getUser(email);
-
-            if (userCheck == null) {
-                // Tenta salvar no banco de dados
-                boolean sucesso = dbHelper.insertUser(user);
-
-                if (sucesso) {
-                    Toast.makeText(RegisterActivity.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
-                    // Retorna para a tela de login
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Erro: Este e-mail já está cadastrado.", Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(RegisterActivity.this, "Erro: Usuário já cadastrado.", Toast.LENGTH_LONG).show();
-            }
-        });
+        setBtnRegisterOnClickListener(btnRegister, sharedPreferences);
     }
 
     protected void setEdtTxtNameOnTextChangedListener(EditText edtTxtName) {
@@ -181,5 +143,60 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    protected void setBtnRegisterOnClickListener(Button btnRegister, SharedPreferences sharedPreferences) {
+        btnRegister.setOnClickListener(view -> {
+            // Captura e limpa os textos digitados
+            String nome = edtTxtName.getText().toString().trim();
+            String email = edtTxtEmail.getText().toString().trim();
+            String senha = edtTxtPass.getText().toString().trim();
+
+            // Validação simples
+            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //Cria um objeto do tipo user para inserir no bd
+            //id null pois o banco de dados cria o ID sozinho
+            User user = new User(null, nome, email, senha);
+
+            //verifica se o usuario ja esta registrado
+            User userCheck = dbHelper.getUser(email);
+
+            if (userCheck == null) {
+                // Tenta salvar no banco de dados
+                boolean sucesso = dbHelper.insertUser(user);
+
+                if (sucesso) {
+                    setLog(1, this.getLocalClassName(), "Usuário cadastrado");
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.apply();
+
+                    //Vai para a home page
+                    Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                setLog(2, this.getLocalClassName(), "Usuário já cadastrado");
+            }
+        });
+    }
+
+    protected void setLog(Integer idLogType, String className, String message) {
+        switch (idLogType) {
+            case 1:
+                Log.d(className, message);
+                break;
+            case 2:
+                Log.e(className, message);
+                break;
+            default:
+                Log.e(className, "Só são permitidos 1 ou 2 como id para o log");
+        }
     }
 }

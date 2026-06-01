@@ -2,10 +2,12 @@ package com.tripleJTec.rotinaplus.ui.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -19,9 +21,9 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.tripleJTec.rotinaplus.R;
 
-import com.tripleJTec.rotinaplus.domain.model.User;
+import com.tripleJTec.rotinaplus.model.User;
 import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
-import com.tripleJTec.rotinaplus.data.local.dataBase;
+import com.tripleJTec.rotinaplus.data.DataBase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtPassForgotten, txtRegister;
     Button btnLogin;
     Boolean togglePassVisibility = false;
-
-    // Declarando o banco de dados no escopo da classe para poder acessá-lo nos listeners
-    dataBase dbHelper;
+    DataBase dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Instancia o banco de dados passando o contexto atual (this)
-        dbHelper = new dataBase(this);
+        dbHelper = new DataBase(this);
 
-        dbHelper.getAllUsers();
-        edtTxtEmail = findViewById(R.id.edtTxtEmailLogin);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_shared_preferences_name), MODE_PRIVATE);
+
         // Iniciando views
         edtTxtEmail = findViewById(R.id.edtTxtEmailLogin);
         edtTxtPass = findViewById(R.id.edtTxtPassLogin);
@@ -54,12 +54,13 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
         // Funções
+        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
         setEdtTxtNameOnTextChangedListener(edtTxtEmail);
         setEmailIconClickListener(edtTxtEmail);
         setPassIconClickListener(edtTxtPass);
         setGoToForgottenPassClickListener(txtPassForgotten);
         setGoToRegisterClickListener(txtRegister);
-        setBtnLoginListener(btnLogin);
+        setBtnLoginListener(btnLogin, sharedPreferences);
     }
 
     protected void setEdtTxtNameOnTextChangedListener(EditText edtTxtEmail) {
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void setBtnLoginListener(Button btnLogin) {
+    protected void setBtnLoginListener(Button btnLogin, SharedPreferences sharedPreferences) {
         btnLogin.setOnClickListener(view -> {
             // Captura o que o usuário digitou
             String email = edtTxtEmail.getText().toString().trim();
@@ -169,22 +170,43 @@ public class MainActivity extends AppCompatActivity {
             // Checa as credenciais no banco de dados
             User user = dbHelper.getUser(email);
 
-            //verifica se tem usuário no BD
+            //verifica se o usuário foi encontrado no BD
             if (user != null) {
-                //verifica senha do usuário
                 if (senha.equals(user.getSenha())) {
-                    Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                    setLog(1, this.getLocalClassName(), "Usuário encontrado");
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.apply();
 
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    intent.putExtra("email", user.getEmail());
                     startActivity(intent);
                     finish();
-                } else {
-                    Toast.makeText(MainActivity.this, "Senha incorreta!", Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(MainActivity.this, "E-mail incorreto! (conta não encontrada)", Toast.LENGTH_LONG).show();
+                setLog(2, this.getLocalClassName(), "Usuário não encontrado");
             }
         });
+    }
+
+    protected void setLog(Integer idLogType, String className, String message) {
+        switch (idLogType) {
+            case 1:
+                Log.d(className, message);
+                break;
+            case 2:
+                Log.e(className, message);
+                break;
+            default:
+                Log.e(className, "Só são permitidos 1 ou 2 como id para o log");
+        }
+    }
+
+    protected void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

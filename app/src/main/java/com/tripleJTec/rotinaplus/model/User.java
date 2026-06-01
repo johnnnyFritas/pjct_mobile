@@ -1,4 +1,11 @@
-package com.tripleJTec.rotinaplus.domain.model;
+package com.tripleJTec.rotinaplus.model;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+
+import com.tripleJTec.rotinaplus.R;
+import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
+import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
 
 public class User {
     private String id;

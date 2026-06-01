@@ -1,21 +1,22 @@
-package com.tripleJTec.rotinaplus.data.local;
+package com.tripleJTec.rotinaplus.data;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.tripleJTec.rotinaplus.domain.model.User;
+import com.tripleJTec.rotinaplus.model.User;
 
-public class dataBase extends SQLiteOpenHelper {
+public class DataBase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "RotinaPlusDB";
     // Mudamos a versão para 2. Isso avisa ao Android que a estrutura mudou
     // e aciona o método onUpgrade para recriar a tabela.
     private static final int DATABASE_VERSION = 2;
 
-    public dataBase(Context context) {
+    public DataBase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -37,7 +38,6 @@ public class dataBase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Atualizamos o método para receber os três parâmetros
     public boolean insertUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -109,5 +109,10 @@ public class dataBase extends SQLiteOpenHelper {
 
         Log.d("DADOS_DO_BANCO", "===== FIM DA TABELA =====");
         cursor.close();
+    }
+
+    public Boolean checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
+        String email = sharedPreferences.getString("email", "E-mail não salvo");
+        return !email.equals("E-mail não salvo");
     }
 }

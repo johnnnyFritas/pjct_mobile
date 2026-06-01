@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">rotinaPlus</string>
+    <string name="app_shared_preferences_name">AppPrefs</string>
     <string name="logo_app_description">Logo do app Rotina+. É um escudo com um mais no meio em cima de um livro com uma coroa em cima podendo também indicar uma cruz (salvação). Um calendário na direita. Um relógio na esquerda.</string>
     <string name="name_requisition">Insira seu nome</string>
     <string name="email_requisition">Insira seu e-mail</string>
