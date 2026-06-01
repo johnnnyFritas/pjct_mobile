@@ -43,31 +43,31 @@
             android:id="@+id/layoutCreateRoutineHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/shape_home_1"
-            android:padding="20dp"
-            android:layout_marginEnd="30dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <ImageView
                 android:id="@+id/imgCreateRoutineHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:contentDescription="@string/img_create_routine_png_description"
-                android:src="@drawable/img_create_routine"
-                android:layout_gravity="center"/>
+                android:src="@drawable/img_create_routine" />
 
             <Button
                 android:id="@+id/btnCreateRoutineHome"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                app:backgroundTint="@null"
-                android:background="@drawable/button_main"
-                android:text="@string/create_routine"
-                android:fontFamily="@font/poppins_bold"
-                android:textSize="11sp"
                 android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/button_main"
+                android:fontFamily="@font/poppins_bold"
                 android:letterSpacing=".1"
-                android:layout_marginTop="25dp"/>
+                android:text="@string/create_routine"
+                android:textSize="11sp"
+                app:backgroundTint="@null" />
 
         </LinearLayout>
 
@@ -121,9 +121,23 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="@string/current_routines"
-            android:layout_gravity="start"
+            android:layout_gravity="center"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/blue_light_2"/>
+            android:textColor="@color/blue_light_2"
+            android:letterSpacing=".1"/>
+
+        <TextView
+            android:id="@+id/txtNoRoutinesHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_light_3"
+            android:textSize="25sp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:letterSpacing=".1"/>
 
     </LinearLayout>
 

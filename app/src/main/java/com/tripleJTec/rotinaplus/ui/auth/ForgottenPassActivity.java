@@ -26,7 +26,7 @@ public class ForgottenPassActivity extends AppCompatActivity {
         setGoToLoginClickListener(logoMaintenance);
     }
 
-    protected void setGoToLoginClickListener(ImageView logoMaintenance) {
+    private void setGoToLoginClickListener(ImageView logoMaintenance) {
         logoMaintenance.setOnClickListener(view -> {
             Intent intent = new Intent(ForgottenPassActivity.this, MainActivity.class);
             startActivity(intent);

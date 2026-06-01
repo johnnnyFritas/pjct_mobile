@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setBtnLoginListener(btnLogin, sharedPreferences);
     }
 
-    protected void setEdtTxtNameOnTextChangedListener(EditText edtTxtEmail) {
+    private void setEdtTxtNameOnTextChangedListener(EditText edtTxtEmail) {
         edtTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    protected void setEmailIconClickListener(EditText edtTxtEmail) {
+    private void setEmailIconClickListener(EditText edtTxtEmail) {
         edtTxtEmail.setOnTouchListener( (view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 if (edtTxtEmail.getCompoundDrawables()[2] != null) {
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    protected void setPassIconClickListener(EditText edtTxtPass) {
+    private void setPassIconClickListener(EditText edtTxtPass) {
         edtTxtPass.setOnTouchListener( (view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 float dp = edtTxtPass.getPaddingEnd();
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void setGoToForgottenPassClickListener(TextView txtPassForgotten) {
+    private void setGoToForgottenPassClickListener(TextView txtPassForgotten) {
         txtPassForgotten.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, ForgottenPassActivity.class);
             startActivity(intent);
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void setGoToRegisterClickListener(TextView txtRegister) {
+    private void setGoToRegisterClickListener(TextView txtRegister) {
         txtRegister.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void setBtnLoginListener(Button btnLogin, SharedPreferences sharedPreferences) {
+    private void setBtnLoginListener(Button btnLogin, SharedPreferences sharedPreferences) {
         btnLogin.setOnClickListener(view -> {
             // Captura o que o usuário digitou
             String email = edtTxtEmail.getText().toString().trim();
@@ -184,12 +184,13 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             } else {
-                setLog(2, this.getLocalClassName(), "Usuário não encontrado");
+                Toast.makeText(MainActivity.this, "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
+                setLog(2, this.getLocalClassName(), "Usuário não encontrado.");
             }
         });
     }
 
-    protected void setLog(Integer idLogType, String className, String message) {
+    private void setLog(Integer idLogType, String className, String message) {
         switch (idLogType) {
             case 1:
                 Log.d(className, message);
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
+    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
         if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);

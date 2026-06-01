@@ -10,10 +10,10 @@
     <string name="register"><u>Crie sua conta</u></string>
     <string name="register_uppercase">CRIE SUA CONTA</string>
     <string name="maintenance">Em construção…</string>
-    <string name="back_to_login_instruction">Para voltar ao login&#10;clique na logo.</string>
+    <string name="back_to_login_instruction">Para voltar ao login\nclique na logo.</string>
     <string name="create_account">Criar Conta</string>
     <string name="back_to_login"><u>Voltar ao login</u></string>
-    <string name="title_home">Olá,&#10;%s!</string>
+    <string name="title_home">Olá,\n%s!</string>
     <string name="img_create_routine_png_description">Um relógio azul e branco, uma prancheta com tarefas marcadas como completa e um lápis amarelo com borracha azul escrevendo na mesma prancheta ao fundo tem cores azuis em formas redondas a direita e cores amarelas em formas redondas a esquerda.</string>
     <string name="img_my_routines_png_description">Um relógio azul e branco, um calendário com uma seta apontando para os dois lados e uma mini prancheta a direita com tarefas escritas. O fundo tem cores azuis em formatos redondo.</string>
     <string name="create_routine">Nova rotina</string>
@@ -23,4 +23,18 @@
     <string name="icon_home_png_description">Icone de casa, indicando que ao clicar vai para a tela home.</string>
     <string name="icon_create_routine_png_description">Icone de + circulado, indicando que ao clicar cria uma nova rotina.</string>
     <string name="icon_profile_1_png_description">Icone de humano, indicando que ao clicar entra no perfil do usuário.</string>
+    <string name="no_routines">Você não tem rotinas cadastradas!\n\nCrie uma clicando logo acima.</string>
+    <string name="title_create_routine">Criar nova rotina</string>
+    <string name="create_routine_name">Nome da rotina</string>
+    <string name="create_routine_description">Descrição da rotina</string>
+    <string name="create_routine_hour">Hora da rotina</string>
+    <string name="create_routine_days_of_week">Vai repetir na semana?\nEscolha os dias clicando abaixo:</string>
+    <string name="create_routine_sunday">Domingo</string>
+    <string name="create_routine_monday">Segunda-Feira</string>
+    <string name="create_routine_tuesday">Terça-Feira</string>
+    <string name="create_routine_wednesday">Quarta-Feira</string>
+    <string name="create_routine_thursday">Quinta-Feira</string>
+    <string name="create_routine_friday">Sexta-Feira</string>
+    <string name="create_routine_saturday">Sábado-Feira</string>
+    <string name="back_to_home"><u>Voltar para home</u></string>
 </resources>

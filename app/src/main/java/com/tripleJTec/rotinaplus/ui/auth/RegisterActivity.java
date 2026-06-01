@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         setBtnRegisterOnClickListener(btnRegister, sharedPreferences);
     }
 
-    protected void setEdtTxtNameOnTextChangedListener(EditText edtTxtName) {
+    private void setEdtTxtNameOnTextChangedListener(EditText edtTxtName) {
         edtTxtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    protected void setEdtTxtEmailOnTextChangedListener(EditText edtTxtEmail) {
+    private void setEdtTxtEmailOnTextChangedListener(EditText edtTxtEmail) {
         edtTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -101,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    protected void setPassIconClickListener(EditText edtTxtPass) {
+    private void setPassIconClickListener(EditText edtTxtPass) {
         edtTxtPass.setOnTouchListener( (view, motionEvent) -> {
 
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -137,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    protected void setGoToLoginClickListener(TextView txtBackToLogin) {
+    private void setGoToLoginClickListener(TextView txtBackToLogin) {
         txtBackToLogin.setOnClickListener(view -> {
             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
             startActivity(intent);
@@ -145,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    protected void setBtnRegisterOnClickListener(Button btnRegister, SharedPreferences sharedPreferences) {
+    private void setBtnRegisterOnClickListener(Button btnRegister, SharedPreferences sharedPreferences) {
         btnRegister.setOnClickListener(view -> {
             // Captura e limpa os textos digitados
             String nome = edtTxtName.getText().toString().trim();
@@ -187,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    protected void setLog(Integer idLogType, String className, String message) {
+    private void setLog(Integer idLogType, String className, String message) {
         switch (idLogType) {
             case 1:
                 Log.d(className, message);
