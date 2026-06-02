@@ -27,7 +27,7 @@
     <string name="title_create_routine">Criar nova rotina</string>
     <string name="create_routine_name">Nome da rotina</string>
     <string name="create_routine_description">Descrição da rotina</string>
-    <string name="create_routine_hour">Hora da rotina</string>
+    <string name="create_routine_hour">Hora da rotina (Ex: 13:00)</string>
     <string name="create_routine_days_of_week">Vai repetir na semana?\nEscolha os dias clicando abaixo:</string>
     <string name="create_routine_sunday">Domingo</string>
     <string name="create_routine_monday">Segunda-Feira</string>
