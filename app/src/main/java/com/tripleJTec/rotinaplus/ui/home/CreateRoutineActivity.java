@@ -29,10 +29,10 @@ public class CreateRoutineActivity extends AppCompatActivity {
     TextView txtHourWarning, txtBackToHome;
     CheckBox checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday, checkBoxThursday, checkBoxFriday, checkBoxSaturday;
     Button btnCreateRoutine;
-
     ImageButton btnPlay, btnRecord;
     DataBase dbHelper;
 
+    //audio
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
     private String audioFile;
@@ -45,7 +45,6 @@ public class CreateRoutineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_routine);
 
         dbHelper = new DataBase(this);
-        audioFile = getExternalFilesDir(null)+ "/rotina_audio.3gp";
 
         //iniciando views
         edtTxtName = findViewById(R.id.edtTxtCreateRoutineName);
@@ -63,6 +62,8 @@ public class CreateRoutineActivity extends AppCompatActivity {
         checkBoxFriday = findViewById(R.id.checkboxCreateRoutineFriday);
         checkBoxSaturday = findViewById(R.id.checkboxCreateRoutineSaturday);
 
+        //audio
+        audioFile = getExternalFilesDir(null)+ "/rotina_audio.3gp";
         btnRecord = findViewById(R.id.btnRecord);
         btnPlay = findViewById(R.id.btnPlay);
         btnCreateRoutine = findViewById(R.id.btnCreateRoutine);
@@ -79,7 +80,6 @@ public class CreateRoutineActivity extends AppCompatActivity {
                     1
             );
         }
-
 
         //função pra gravar e soltar para parar
         final long[] pressStartTime = {0};
@@ -146,15 +146,15 @@ public class CreateRoutineActivity extends AppCompatActivity {
 
     //método para parar gravação
     private void stopRecording(){
-    if (mediaRecorder != null){
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
-        isRecording = false;
-        hasRecording = true;
-        btnRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
-        btnPlay.setEnabled(true);
-        Toast.makeText(this,"Áudio salvo", Toast.LENGTH_SHORT).show();
+        if (mediaRecorder != null){
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+            isRecording = false;
+            hasRecording = true;
+            btnRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
+            btnPlay.setEnabled(true);
+            Toast.makeText(this,"Áudio salvo", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -194,6 +194,8 @@ public class CreateRoutineActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
+
+
 
 
     private void setEdtTxtDescriptionOnTextChangedListener(EditText edtTxtDescription) {
