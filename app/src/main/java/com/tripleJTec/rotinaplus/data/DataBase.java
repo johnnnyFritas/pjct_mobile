@@ -128,7 +128,7 @@ public class DataBase extends SQLiteOpenHelper {
         ArrayList<Routines> routinesArrayList = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
-            do {
+            while (cursor.moveToNext()) {
                 int idId = cursor.getColumnIndex("id");
                 int nomeId = cursor.getColumnIndex("nome");
                 int descricaoId = cursor.getColumnIndex("descricao");
@@ -149,7 +149,7 @@ public class DataBase extends SQLiteOpenHelper {
                 String idUsuario = cursor.getString(idUsuarioId);
 
                 routinesArrayList.add(new Routines(id, nome, descricao, arrayDiasDaSemana, hora, repete, concluida, idUsuario));
-            } while (cursor.moveToNext());
+            }
 
             cursor.close();
             return routinesArrayList;

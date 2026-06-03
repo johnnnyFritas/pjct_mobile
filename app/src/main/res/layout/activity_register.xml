@@ -59,16 +59,6 @@
             android:letterSpacing=".1"
             android:drawableEnd="@drawable/icon_profile"/>
 
-        <TextView
-            android:id="@+id/txtNameWarning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="7dp"
-            android:letterSpacing=".1"/>
-
         <EditText
             android:id="@+id/edtTxtEmailRegister"
             android:layout_width="match_parent"
@@ -86,16 +76,6 @@
             android:letterSpacing=".1"
             android:drawableEnd="@drawable/icon_email"/>
 
-        <TextView
-            android:id="@+id/txtEmailWarning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="7dp"
-            android:letterSpacing=".1"/>
-
         <EditText
             android:id="@+id/edtTxtPassRegister"
             android:layout_width="match_parent"
@@ -112,16 +92,6 @@
             android:layout_marginTop="25dp"
             android:letterSpacing=".1"
             android:drawableEnd="@drawable/icon_show_password"/>
-
-        <TextView
-            android:id="@+id/txtPassWarning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="7dp"
-            android:letterSpacing=".1"/>
 
         <Button
             android:id="@+id/btnRegister"

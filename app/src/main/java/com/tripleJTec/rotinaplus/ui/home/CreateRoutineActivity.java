@@ -1,21 +1,30 @@
 package com.tripleJTec.rotinaplus.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tripleJTec.rotinaplus.R;
 import com.tripleJTec.rotinaplus.data.DataBase;
+import com.tripleJTec.rotinaplus.model.Routines;
+import com.tripleJTec.rotinaplus.model.User;
+import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
+
+import java.util.ArrayList;
 
 public class CreateRoutineActivity extends AppCompatActivity {
 
@@ -31,6 +40,8 @@ public class CreateRoutineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_routine);
 
         dbHelper = new DataBase(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_shared_preferences_name), MODE_PRIVATE);
 
         //iniciando views
         edtTxtName = findViewById(R.id.edtTxtCreateRoutineName);
@@ -51,8 +62,26 @@ public class CreateRoutineActivity extends AppCompatActivity {
         btnCreateRoutine = findViewById(R.id.btnCreateRoutine);
 
         //funções
+        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
+        String email = getEmailWithSharedPreferences(sharedPreferences);
+        User user = dbHelper.getUser(email);
         setEdtTxtDescriptionOnTextChangedListener(edtTxtDescription);
         setDescriptionIconClickListener(edtTxtDescription);
+        setBtnCreateRoutineListener(btnCreateRoutine, txtHourWarning, user);
+        setGoToHomeClickListener(txtBackToHome);
+    }
+
+    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
+        if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            Intent intent = new Intent(CreateRoutineActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
+        String email = sharedPreferences.getString("email", "E-mail não salvo");
+        return email.equals("E-mail não salvo") ? "" : email;
     }
 
     private void setEdtTxtDescriptionOnTextChangedListener(EditText edtTxtDescription) {
@@ -107,5 +136,62 @@ public class CreateRoutineActivity extends AppCompatActivity {
         }));
     }
 
+    private void setBtnCreateRoutineListener(Button btnCreateRoutine, TextView txtHourWarning, User user) {
+        btnCreateRoutine.setOnClickListener(v -> {
+            if (validateHour()) {
+                txtHourWarning.setVisibility(TextView.VISIBLE);
 
+                String sunday = checkBoxSunday.isChecked() ? "0" : null;
+                String monday = checkBoxMonday.isChecked() ? "1" : null;
+                String tuesday = checkBoxTuesday.isChecked() ? "2" : null;
+                String wednesday = checkBoxWednesday.isChecked() ? "3" : null;
+                String thursday = checkBoxThursday.isChecked() ? "4" : null;
+                String friday = checkBoxFriday.isChecked() ? "5" : null;
+                String saturday = checkBoxSaturday.isChecked() ? "6" : null;
+
+                String[] daysOfWeek = new String[7];
+                daysOfWeek[0] = sunday;
+                daysOfWeek[1] = monday;
+                daysOfWeek[2] = tuesday;
+                daysOfWeek[3] = wednesday;
+                daysOfWeek[4] = thursday;
+                daysOfWeek[5] = friday;
+                daysOfWeek[6] = saturday;
+
+                boolean repeatable = false;
+
+                for (String day : daysOfWeek) {
+                    if (day == null) {
+                        repeatable = true;
+                        break;
+                    }
+                }
+
+                boolean createRoutineBool = dbHelper.insertRoutine(new Routines(null, edtTxtName.getText().toString(), edtTxtDescription.getText().toString(), daysOfWeek, edtTxtHour.getText().toString(), repeatable, false, user.getId()));
+
+                if (createRoutineBool) {
+                    Toast.makeText(getApplicationContext(), "Rotina criada!", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(CreateRoutineActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                txtHourWarning.setText(getString(R.string.invalid_hour));
+            }
+        });
+    }
+
+    private Boolean validateHour() {
+        String regex = "(0[0-9]|1[0-9]|2[0-3]):(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])";
+        return edtTxtHour.getText().toString().trim().matches(regex);
+    }
+
+    private void setGoToHomeClickListener(TextView txtBackToHome) {
+        txtBackToHome.setOnClickListener(v -> {
+            Intent intent = new Intent(CreateRoutineActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
 }

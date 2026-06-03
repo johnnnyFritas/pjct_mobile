@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView txtTitle, txtNoRoutines;
     Button btnCreateRoutine, btnMyRoutines;
+    ImageView imgCreateRoutineBottomMenuIcon;
     DataBase dbHelper;
 
     @Override
@@ -41,14 +43,17 @@ public class HomeActivity extends AppCompatActivity {
         btnCreateRoutine = findViewById(R.id.btnCreateRoutineHome);
         btnMyRoutines = findViewById(R.id.btnMyRoutinesHome);
 
+        imgCreateRoutineBottomMenuIcon = findViewById(R.id.imgCreateRoutineBottomMenuIcon);
+
         // Funções
         checkUserAuthenticationWithSharedPreferences(sharedPreferences);
         String email = getEmailWithSharedPreferences(sharedPreferences);
-        setTxtTitleHome(txtTitle, dbHelper.getUser(email));
         setBtnCreateRoutineListener(btnCreateRoutine);
         setBtnMyRoutinesListener(btnMyRoutines);
         User user = dbHelper.getUser(email);
+        setTxtTitleHome(txtTitle, user);
         getUserRoutines(user);
+        setImgCreateRoutineBottomMenuIconListener();
     }
 
     private void setTxtTitleHome(TextView txtTitle, User user) {
@@ -93,6 +98,16 @@ public class HomeActivity extends AppCompatActivity {
             txtNoRoutines.setText(getString(R.string.no_routines));
         }
 
+        for (int i = 0; i < 3; i++) {
 
+        }
+    }
+
+    private void setImgCreateRoutineBottomMenuIconListener() {
+        imgCreateRoutineBottomMenuIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, CreateRoutineActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }

@@ -19,7 +19,7 @@
     <string name="create_routine">Nova rotina</string>
     <string name="my_routines">Minhas rotinas</string>
     <string name="see_routines">Ver rotinas</string>
-    <string name="current_routines">Rotinas recentes</string>
+    <string name="current_routines">Rotina recente</string>
     <string name="icon_home_png_description">Icone de casa, indicando que ao clicar vai para a tela home.</string>
     <string name="icon_create_routine_png_description">Icone de + circulado, indicando que ao clicar cria uma nova rotina.</string>
     <string name="icon_profile_1_png_description">Icone de humano, indicando que ao clicar entra no perfil do usuário.</string>
@@ -37,4 +37,5 @@
     <string name="create_routine_friday">Sexta-Feira</string>
     <string name="create_routine_saturday">Sábado-Feira</string>
     <string name="back_to_home"><u>Voltar para home</u></string>
+    <string name="invalid_hour">Preencha o horário com o formato HH:MM (ex: 12:30)</string>
 </resources>

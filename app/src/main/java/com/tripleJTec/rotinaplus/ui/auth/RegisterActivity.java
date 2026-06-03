@@ -27,7 +27,7 @@ import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText edtTxtName, edtTxtEmail, edtTxtPass;
-    TextView txtNameWarning, txtEmailWarning, txtPassWarning, txtBackToLogin;
+    TextView txtBackToLogin;
     Button btnRegister;
     Boolean togglePassVisibility = false;
     DataBase dbHelper;
@@ -47,9 +47,6 @@ public class RegisterActivity extends AppCompatActivity {
         edtTxtEmail = findViewById(R.id.edtTxtEmailRegister);
         edtTxtPass = findViewById(R.id.edtTxtPassRegister);
 
-        txtNameWarning = findViewById(R.id.txtNameWarning);
-        txtEmailWarning = findViewById(R.id.txtEmailWarning);
-        txtPassWarning = findViewById(R.id.txtPassWarning);
         txtBackToLogin = findViewById(R.id.txtBackToLogin);
 
         btnRegister = findViewById(R.id.btnRegister);
