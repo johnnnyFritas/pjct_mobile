@@ -27,17 +27,16 @@ import com.tripleJTec.rotinaplus.model.Routines;
 import com.tripleJTec.rotinaplus.model.User;
 import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
 
-import java.util.ArrayList;
-
 import java.io.IOException;
 
 public class CreateRoutineActivity extends AppCompatActivity {
 
     EditText edtTxtName, edtTxtDescription, edtTxtHour;
-    TextView txtHourWarning, txtBackToHome;
+    TextView txtHourWarning, txtBackToHome, txtAudioWarning;
     CheckBox checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday, checkBoxThursday, checkBoxFriday, checkBoxSaturday;
     Button btnCreateRoutine;
-    ImageButton btnPlay, btnRecord;
+    ImageButton imgPlay, imgRecord;
+    Integer click = 0;
     DataBase dbHelper;
 
     //audio
@@ -63,6 +62,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
 
         txtHourWarning = findViewById(R.id.txtCreateRoutineHourWarning);
         txtBackToHome = findViewById(R.id.txtCreateRoutineBackToHome);
+        txtAudioWarning = findViewById(R.id.txtAudioWarning);
 
         checkBoxSunday = findViewById(R.id.checkboxCreateRoutineSunday);
         checkBoxMonday = findViewById(R.id.checkboxCreateRoutineMonday);
@@ -74,8 +74,8 @@ public class CreateRoutineActivity extends AppCompatActivity {
 
         //audio
         audioFile = getExternalFilesDir(null)+ "/rotina_audio.3gp";
-        btnRecord = findViewById(R.id.btnRecord);
-        btnPlay = findViewById(R.id.btnPlay);
+        imgRecord = findViewById(R.id.imgRecord);
+        imgPlay = findViewById(R.id.imgPlay);
         btnCreateRoutine = findViewById(R.id.btnCreateRoutine);
 
         //funções
@@ -95,105 +95,8 @@ public class CreateRoutineActivity extends AppCompatActivity {
             );
         }
 
-        //função pra gravar e soltar para parar
-        final long[] pressStartTime = {0};
-
-        btnRecord.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                pressStartTime[0] = System.currentTimeMillis();
-                startRecording();
-
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                long pressDuration = System.currentTimeMillis() - pressStartTime[0];
-
-                if (pressDuration < 500) {
-                    // tempo mínimo que não grava
-                    if (mediaRecorder != null) {
-                        try {
-                            mediaRecorder.stop();
-                        } catch (Exception ignored) {}
-                        mediaRecorder.release();
-                        mediaRecorder = null;
-                        isRecording = false;
-                    }
-                    Toast.makeText(this, "Segure para gravar!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Gravação válida
-                    if (isRecording) {
-                        stopRecording();
-                    }
-                }
-            }
-            return true;
-        });
-
-        //botão para reproduzir o áudio
-        btnPlay.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (hasRecording && audioFile !=null) {
-                    playRecording();
-                } else {
-                    Toast.makeText(this, "Nenhum áudio gravado ainda", Toast.LENGTH_SHORT).show();
-                }
-            }
-            return true;
-        });
-    }
-
-    //método para iniciar gravação
-    private void startRecording(){
-        try{
-            mediaRecorder = new MediaRecorder();
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mediaRecorder.setOutputFile(audioFile);
-            mediaRecorder.prepare();
-            mediaRecorder.start();
-            isRecording = true;
-            btnRecord.setImageResource(android.R.drawable.ic_media_pause);
-            Toast.makeText(this, "Gravando....", Toast.LENGTH_SHORT).show();
-        }catch(IOException e){
-            Toast.makeText(this, "Erro ao gravar áudio", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //método para parar gravação
-    private void stopRecording(){
-        if (mediaRecorder != null){
-            mediaRecorder.stop();
-            mediaRecorder.release();
-            mediaRecorder = null;
-            isRecording = false;
-            hasRecording = true;
-            btnRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
-            btnPlay.setEnabled(true);
-            Toast.makeText(this,"Áudio salvo", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //método para reproduzir áudio gravado
-    private void playRecording() {
-        try {
-            if (mediaPlayer != null) {
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(audioFile);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            Toast.makeText(this, "Reproduzindo...", Toast.LENGTH_SHORT).show();
-
-            mediaPlayer.setOnCompletionListener(mp -> {
-                mp.release();
-                mediaPlayer = null;
-            });
-
-        } catch (IOException e) {
-            Toast.makeText(this, "Erro ao reproduzir: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        setImgRecordListener();
+        setImgPlayListener();
     }
 
     private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
@@ -330,5 +233,122 @@ public class CreateRoutineActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setImgRecordListener() {
+        final long[] pressStartTime = {0};
+
+        imgRecord.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                pressStartTime[0] = System.currentTimeMillis();
+                startRecording();
+
+                return true;
+            } else {
+                long pressDuration = System.currentTimeMillis() - pressStartTime[0];
+
+                if (pressDuration < 500) {
+                    // tempo mínimo que não grava
+                    if (mediaRecorder != null) {
+                        try {
+                            mediaRecorder.stop();
+                        } catch (Exception ignored) {}
+                        mediaRecorder.release();
+                        mediaRecorder = null;
+                        isRecording = false;
+
+                        txtAudioWarning.setText(getString(R.string.audio_warning));
+                        imgRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
+
+                        return true;
+                    }
+                    Toast.makeText(this, "Segure para gravar!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Gravação válida
+                    if (isRecording) {
+                        txtAudioWarning.setVisibility(TextView.GONE);
+
+                        stopRecording();
+
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setImgPlayListener() {
+        imgPlay.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (hasRecording && audioFile !=null) {
+                    playRecording();
+                } else {
+                    Toast.makeText(this, "Nenhum áudio gravado ainda", Toast.LENGTH_SHORT).show();
+                }
+            }
+            return true;
+        });
+    }
+
+    private void startRecording(){
+        try {
+            mediaRecorder = new MediaRecorder();
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mediaRecorder.setOutputFile(audioFile);
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+
+            isRecording = true;
+
+            imgRecord.setImageResource(android.R.drawable.ic_media_pause);
+
+            Toast.makeText(this, "Gravando....", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, "Erro ao gravar áudio", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopRecording(){
+        if (mediaRecorder != null) {
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+
+            isRecording = false;
+            hasRecording = true;
+
+            imgRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
+            imgPlay.setEnabled(true);
+
+            Toast.makeText(this,"Áudio salvo", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void playRecording() {
+        try {
+            if (mediaPlayer != null) {
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(audioFile);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+            Toast.makeText(this, "Reproduzindo...", Toast.LENGTH_SHORT).show();
+
+            mediaPlayer.setOnCompletionListener(mp -> {
+                mp.release();
+                mediaPlayer = null;
+            });
+
+        } catch (IOException e) {
+            Toast.makeText(this, "Erro ao reproduzir: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

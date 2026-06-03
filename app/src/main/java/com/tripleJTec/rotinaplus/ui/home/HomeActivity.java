@@ -3,9 +3,11 @@ package com.tripleJTec.rotinaplus.ui.home;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,9 +23,10 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView txtTitle, txtNoRoutines;
+    TextView txtTitle, txtNoRoutines, txtTitleCurrentRoutine, txtHourCurrentRoutine;
     Button btnCreateRoutine, btnMyRoutines;
     ImageView imgCreateRoutineBottomMenuIcon;
+    LinearLayout layoutRoutines;
     DataBase dbHelper;
 
     @Override
@@ -39,11 +42,15 @@ public class HomeActivity extends AppCompatActivity {
         // Iniciando views
         txtTitle = findViewById(R.id.txtTitleHome);
         txtNoRoutines = findViewById(R.id.txtNoRoutinesHome);
+        txtTitleCurrentRoutine = findViewById(R.id.txtTitleCurrentRoutine);
+        txtHourCurrentRoutine = findViewById(R.id.txtHourCurrentRoutine);
 
         btnCreateRoutine = findViewById(R.id.btnCreateRoutineHome);
         btnMyRoutines = findViewById(R.id.btnMyRoutinesHome);
 
         imgCreateRoutineBottomMenuIcon = findViewById(R.id.imgCreateRoutineBottomMenuIcon);
+
+        layoutRoutines = findViewById(R.id.layoutRoutinesHome);
 
         // Funções
         checkUserAuthenticationWithSharedPreferences(sharedPreferences);
@@ -96,10 +103,10 @@ public class HomeActivity extends AppCompatActivity {
         if (routinesArrayList == null || routinesArrayList.isEmpty()) {
             txtNoRoutines.setVisibility(View.VISIBLE);
             txtNoRoutines.setText(getString(R.string.no_routines));
-        }
-
-        for (int i = 0; i < 3; i++) {
-
+        } else {
+            layoutRoutines.setVisibility(LinearLayout.VISIBLE);
+            txtTitleCurrentRoutine.setText(routinesArrayList.get(routinesArrayList.size() - 1).getName());
+            txtHourCurrentRoutine.setText(routinesArrayList.get(routinesArrayList.size() - 1).getHour());
         }
     }
 

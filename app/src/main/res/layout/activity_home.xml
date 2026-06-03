@@ -124,7 +124,8 @@
             android:layout_gravity="center"
             android:fontFamily="@font/poppins_medium"
             android:textColor="@color/blue_light_2"
-            android:letterSpacing=".1"/>
+            android:letterSpacing=".1"
+            android:layout_marginTop="50dp"/>
 
         <TextView
             android:id="@+id/txtNoRoutinesHome"
@@ -146,32 +147,68 @@
             android:orientation="vertical"
             android:background="@drawable/shape_home_1"
             android:padding="5dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/txtTitleCurrentRoutine"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textColor="@color/blue_light_2"
-                android:fontFamily="@font/poppins_medium"
-                android:letterSpacing=".1"/>
+                android:orientation="horizontal"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:layout_marginStart="15dp">
 
-            <TextView
+                <TextView
+                    android:id="@+id/txtLabelTitleCurrentRoutine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"
+                    android:text="@string/label_name_current_routine"/>
+
+                <TextView
+                    android:id="@+id/txtTitleCurrentRoutine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/blue_light_2"
+                    android:fontFamily="@font/poppins_medium"
+                    android:letterSpacing=".1"
+                    android:layout_marginStart="15dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/gray_light_1"
-                android:fontFamily="@font/poppins_medium"
-                android:letterSpacing=".1"/>
+                android:orientation="horizontal"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:layout_marginStart="15dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/gray_light_1"
-                android:fontFamily="@font/poppins_medium"
-                android:letterSpacing=".1"/>
+                <TextView
+                    android:id="@+id/txtLabelHourCurrentRoutine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"
+                    android:text="@string/label_hour_current_routine"/>
+
+                <TextView
+                    android:id="@+id/txtHourCurrentRoutine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:letterSpacing=".1"
+                    android:layout_marginStart="15dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

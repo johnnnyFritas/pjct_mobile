@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_light_1"
-    android:padding="15dp">
+    android:background="@color/blue_light_1">
 
     <TextView
         android:id="@+id/txtTitleCreateRoutine"
@@ -28,8 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingHorizontal="25dp"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp">
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/edtTxtCreateRoutineName"
@@ -68,7 +66,6 @@
             android:fontFamily="@font/poppins_medium"
             android:drawableEnd="@drawable/icon_erase_all_content"/>
 
-        <!-- Área de áudio -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,22 +74,33 @@
             android:layout_marginTop="10dp">
 
             <ImageButton
-                android:id="@+id/btnRecord"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/imgRecord"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@android:drawable/ic_btn_speak_now"
                 android:background="@drawable/button_main"
-                android:contentDescription="Gravar áudio"
+                android:contentDescription="@string/record_audio"
                 android:layout_marginEnd="20dp"/>
 
             <ImageButton
-                android:id="@+id/btnPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imgPlay"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/button_main"
-                android:contentDescription="Reproduzir áudio"
+                android:contentDescription="@string/play_audio"
                 android:enabled="false"
                 android:src="@android:drawable/ic_media_play" />
+
+            <TextView
+                android:id="@+id/txtAudioWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:letterSpacing=".1"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:layout_marginStart="20dp"/>
 
         </LinearLayout>
 
@@ -119,12 +127,12 @@
             android:id="@+id/txtCreateRoutineHourWarning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="7dp"
             android:fontFamily="@font/poppins_medium"
             android:letterSpacing=".1"
             android:textColor="@color/red"
-            android:textSize="16sp"
-            android:layout_gravity="center"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/titleCreateRoutineDaysOfWeek"
@@ -241,7 +249,7 @@
             android:id="@+id/btnCreateRoutine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:paddingVertical="10dp"
             android:textColor="@color/white"
             android:textSize="18sp"

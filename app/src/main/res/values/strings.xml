@@ -38,4 +38,10 @@
     <string name="create_routine_saturday">Sábado-Feira</string>
     <string name="back_to_home"><u>Voltar para home</u></string>
     <string name="invalid_hour">Preencha o horário com o formato HH:MM (ex: 12:30)</string>
+    <string name="record_audio">Gravar áudio</string>
+    <string name="play_audio">Reproduzir áudio</string>
+    <string name="audio_warning">Segura no botão de audio para gravar.</string>
+    <string name="label_name_current_routine">Nome: </string>
+    <string name="label_description_current_routine">Descrição: </string>
+    <string name="label_hour_current_routine">Hora: </string>
 </resources>
