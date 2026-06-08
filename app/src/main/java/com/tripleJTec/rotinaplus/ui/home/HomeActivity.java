@@ -117,4 +117,9 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         });
     }
+
+    public void abrirPerfil(View view) {
+        android.content.Intent intent = new android.content.Intent(this, com.tripleJTec.rotinaplus.ui.ProfileActivity.class);
+        startActivity(intent);
+    }
 }

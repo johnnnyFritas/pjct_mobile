@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@color/blue_light_1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meu Perfil"
+        android:textSize="28sp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/blue_light_2"
+        android:layout_marginBottom="40dp"/>
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#E0E0E0"
+        android:scaleType="centerCrop"
+        android:contentDescription="Foto de perfil do usuário" />
+
+    <Button
+        android:id="@+id/btnTakeFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_main"
+        app:backgroundTint="@null"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/white"
+        android:text="Tirar Foto de Perfil" />
+
+    <Button
+        android:id="@+id/btnVoltar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/transparent"
+        android:text="Voltar para o Menu"
+        android:textColor="@color/blue_light_2"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="14sp"
+        android:textAllCaps="false" />
+</LinearLayout>

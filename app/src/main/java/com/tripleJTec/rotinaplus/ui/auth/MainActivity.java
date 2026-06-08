@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -210,4 +211,5 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
+
 }

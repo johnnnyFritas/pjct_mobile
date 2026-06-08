@@ -248,8 +248,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/icon_profile_1_png_description"
             android:src="@drawable/icon_profile_1"
-            android:layout_marginStart="25dp"/>
-
+            android:layout_marginStart="25dp"
+            android:onClick="abrirPerfil" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
