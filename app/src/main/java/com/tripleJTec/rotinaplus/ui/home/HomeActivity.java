@@ -63,22 +63,17 @@ public class HomeActivity extends AppCompatActivity {
         setImgCreateRoutineBottomMenuIconListener();
     }
 
-    private void setTxtTitleHome(TextView txtTitle, User user) {
-        String title = txtTitle.getResources().getString(R.string.title_home, user.getNome());
-        txtTitle.setText(title);
-    }
-
-    private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
-        String email = sharedPreferences.getString("email", "E-mail não salvo");
-        return email.equals("E-mail não salvo") ? "" : email;
-    }
-
     private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
         if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
+    }
+
+    private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
+        String email = sharedPreferences.getString("email", "E-mail não salvo");
+        return email.equals("E-mail não salvo") ? "" : email;
     }
 
     private void setBtnCreateRoutineListener(Button btnCreateRoutine) {
@@ -95,6 +90,11 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void setTxtTitleHome(TextView txtTitle, User user) {
+        String title = txtTitle.getResources().getString(R.string.title_home, user.getNome());
+        txtTitle.setText(title);
     }
 
     private void getUserRoutines(User user) {
