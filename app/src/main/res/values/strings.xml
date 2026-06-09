@@ -45,4 +45,9 @@
     <string name="label_name_current_routine">Nome: </string>
     <string name="label_description_current_routine">Descrição: </string>
     <string name="label_hour_current_routine">Hora: </string>
+    <string name="title_my_profile">Seu Perfil:</string>
+    <string name="label_name_my_profile">Nome: </string>
+    <string name="edit">Editar</string>
+    <string name="name_my_profile">%s</string>
+    <string name="new_name">Insira seu novo nome do perfil</string>
 </resources>

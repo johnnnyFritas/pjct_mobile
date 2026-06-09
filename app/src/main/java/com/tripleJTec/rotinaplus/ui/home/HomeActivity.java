@@ -3,7 +3,6 @@ package com.tripleJTec.rotinaplus.ui.home;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +17,9 @@ import com.tripleJTec.rotinaplus.data.DataBase;
 import com.tripleJTec.rotinaplus.model.Routines;
 import com.tripleJTec.rotinaplus.model.User;
 import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
+import com.tripleJTec.rotinaplus.ui.routines.CreateRoutineActivity;
+import com.tripleJTec.rotinaplus.ui.routines.MyRoutinesActivity;
+import com.tripleJTec.rotinaplus.ui.user.MyProfileActivity;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView txtTitle, txtNoRoutines, txtTitleCurrentRoutine, txtHourCurrentRoutine;
     Button btnCreateRoutine, btnMyRoutines;
-    ImageView imgCreateRoutineBottomMenuIcon;
+    ImageView imgCreateRoutineBottomMenuIcon, imgProfileBottomMenuIcon;
     LinearLayout layoutRoutines;
     DataBase dbHelper;
 
@@ -49,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         btnMyRoutines = findViewById(R.id.btnMyRoutinesHome);
 
         imgCreateRoutineBottomMenuIcon = findViewById(R.id.imgCreateRoutineBottomMenuIcon);
+        imgProfileBottomMenuIcon = findViewById(R.id.imgProfileBottomMenuIcon);
 
         layoutRoutines = findViewById(R.id.layoutRoutinesHome);
 
@@ -61,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         setTxtTitleHome(txtTitle, user);
         getUserRoutines(user);
         setImgCreateRoutineBottomMenuIconListener();
+        setImgMyProfileBottomMenuIconListener();
     }
 
     private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
@@ -113,6 +117,14 @@ public class HomeActivity extends AppCompatActivity {
     private void setImgCreateRoutineBottomMenuIconListener() {
         imgCreateRoutineBottomMenuIcon.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, CreateRoutineActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void setImgMyProfileBottomMenuIconListener() {
+        imgProfileBottomMenuIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MyProfileActivity.class);
             startActivity(intent);
             finish();
         });

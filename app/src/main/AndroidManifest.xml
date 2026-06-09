@@ -36,8 +36,9 @@
         <activity android:name=".ui.auth.ForgottenPassActivity"/>
         <activity android:name=".ui.auth.RegisterActivity"/>
         <activity android:name=".ui.home.HomeActivity"/>
-        <activity android:name=".ui.home.MyRoutinesActivity"/>
-        <activity android:name=".ui.home.CreateRoutineActivity"/>
+        <activity android:name=".ui.routines.MyRoutinesActivity"/>
+        <activity android:name=".ui.routines.CreateRoutineActivity"/>
+        <activity android:name=".ui.user.MyProfileActivity"/>
     </application>
 
 </manifest>

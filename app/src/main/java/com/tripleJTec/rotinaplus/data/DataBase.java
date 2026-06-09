@@ -101,6 +101,21 @@ public class DataBase extends SQLiteOpenHelper {
         return !email.equals("E-mail não salvo");
     }
 
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = "email = ?";
+        String[] whereArgs = new String[]{
+                user.getEmail()
+        };
+
+        ContentValues values = new ContentValues();
+        values.put("nome", user.getNome());
+
+        long result = db.update("usuarios", values, whereClause, whereArgs);
+        return result != -1;
+    }
+
     //métodos routines
     public boolean insertRoutine(Routines routine) {
         SQLiteDatabase db = getWritableDatabase();
