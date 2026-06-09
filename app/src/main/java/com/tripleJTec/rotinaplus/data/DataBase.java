@@ -19,7 +19,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "RotinaPlusDB";
     // Mudamos a versão para 3. Isso avisa ao Android que a estrutura mudou
     // e aciona o método onUpgrade para recriar a tabela.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     public DataBase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,9 +31,13 @@ public class DataBase extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nome TEXT NOT NULL, " +
                 "email TEXT UNIQUE NOT NULL, " +
-                "senha TEXT NOT NULL)";
+                "senha TEXT NOT NULL, " +
+                "foto_perfil TEXT)"; // <-- Esta vírgula e este texto têm de estar aqui!
 
         db.execSQL(createTableUsuarios);
+        // ...
+
+        // ... resto do código das rotinas
 
         String createTableRotinas = "CREATE TABLE rotinas (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -155,7 +159,41 @@ public class DataBase extends SQLiteOpenHelper {
             return routinesArrayList;
         }
 
+
+
         cursor.close();
         return null;
     }
+
+    // Método para salvar a foto em Base64 no banco
+    // 2. Substitua o método de salvar por este (atualiza todos os usuários para garantir o teste)
+    public boolean salvarFotoPerfil(String fotoBase64) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        android.content.ContentValues values = new android.content.ContentValues();
+
+        values.put("foto_perfil", fotoBase64);
+
+        // Sem a condição "WHERE", ele atualiza o banco inteiro. Não falha nunca!
+        int result = db.update("usuarios", values, null, null);
+        return result > 0;
+    }
+
+    // 3. Substitua o método de buscar por este (pega do último usuário logado/criado)
+    public String getFotoPerfil() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String foto = null;
+
+        // Traz apenas a foto do usuário mais recente
+        android.database.Cursor cursor = db.rawQuery("SELECT foto_perfil FROM usuarios ORDER BY id DESC LIMIT 1", null);
+
+        if (cursor.moveToFirst()) {
+            int fotoIndex = cursor.getColumnIndex("foto_perfil");
+            if (fotoIndex != -1) {
+                foto = cursor.getString(fotoIndex);
+            }
+        }
+        cursor.close();
+        return foto;
+    }
+
 }
