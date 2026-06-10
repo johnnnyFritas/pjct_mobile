@@ -83,22 +83,29 @@ public class Routine extends AppCompatActivity {
         imgProfileBottomMenuIcon = findViewById(R.id.imgProfileBottomMenuIcon);
 
         //funções
-        setImgCreateRoutineBottomMenuIconListener();
-        setImgBottomMenuIconListener();
-        setImgMyProfileBottomMenuIconListener();
-        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
-        String email = getEmailWithSharedPreferences(sharedPreferences);
-        user = dbHelper.getUser(email);
-        routine = dbHelper.getRoutine(routineName, routineHour, routineDaysOfWeek);
-        setTxtTitleRoutine();
-        setTxtDescription();
-        setEdtTxtDescriptionRoutineOnTextChangedListener();
-        setDescriptionIconClickListener();
-        setTxtHour();
-        setDaysOfWeek();
-        setBtnEditDescriptionListener();
-        setBtnEditHourListener();
-        setBtnFinishRoutineListener();
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            String email = getEmailWithSharedPreferences(sharedPreferences);
+            user = dbHelper.getUser(email);
+            if (user != null) {
+                setImgCreateRoutineBottomMenuIconListener();
+                setImgBottomMenuIconListener();
+                setImgMyProfileBottomMenuIconListener();
+                routine = dbHelper.getRoutine(routineName, routineHour, routineDaysOfWeek);
+                setTxtTitleRoutine();
+                setTxtDescription();
+                setEdtTxtDescriptionRoutineOnTextChangedListener();
+                setDescriptionIconClickListener();
+                setTxtHour();
+                setDaysOfWeek();
+                setBtnEditDescriptionListener();
+                setBtnEditHourListener();
+                setBtnFinishRoutineListener();
+            } else {
+                goBackToLoginWithLogout(sharedPreferences);
+            }
+        } else {
+            goBackToLoginWithLogout(sharedPreferences);
+        }
     }
 
     private void setImgCreateRoutineBottomMenuIconListener() {
@@ -123,14 +130,6 @@ public class Routine extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-    }
-
-    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
-        if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
-            Intent intent = new Intent(Routine.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
@@ -304,5 +303,12 @@ public class Routine extends AppCompatActivity {
             default:
                 Log.e(className, "Só são permitidos 1 ou 2 como id para o log");
         }
+    }
+
+    private void goBackToLoginWithLogout(SharedPreferences sharedPreferences) {
+        Intent intent = new Intent(Routine.this, MainActivity.class);
+        sharedPreferences.edit().clear().apply();
+        startActivity(intent);
+        finish();
     }
 }

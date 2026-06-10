@@ -3,6 +3,7 @@ package com.tripleJTec.rotinaplus.ui.home;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView imgCreateRoutineBottomMenuIcon, imgProfileBottomMenuIcon;
     LinearLayout layoutRoutines;
     DataBase dbHelper;
+    User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,22 +59,21 @@ public class HomeActivity extends AppCompatActivity {
         layoutRoutines = findViewById(R.id.layoutRoutinesHome);
 
         // Funções
-        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
-        String email = getEmailWithSharedPreferences(sharedPreferences);
-        setBtnCreateRoutineListener(btnCreateRoutine);
-        setBtnMyRoutinesListener(btnMyRoutines);
-        User user = dbHelper.getUser(email);
-        setTxtTitleHome(txtTitle, user);
-        getUserRoutine(user);
-        setImgCreateRoutineBottomMenuIconListener();
-        setImgMyProfileBottomMenuIconListener();
-    }
-
-    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
-        if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
-            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            String email = getEmailWithSharedPreferences(sharedPreferences);
+            setBtnCreateRoutineListener();
+            setBtnMyRoutinesListener();
+            user = dbHelper.getUser(email);
+            if (user != null) {
+                setTxtTitleHome();
+                getUserRoutine();
+                setImgCreateRoutineBottomMenuIconListener();
+                setImgMyProfileBottomMenuIconListener();
+            } else {
+                goBackToLoginWithLogout(sharedPreferences);
+            }
+        } else {
+            goBackToLoginWithLogout(sharedPreferences);
         }
     }
 
@@ -81,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
         return email.equals("E-mail não salvo") ? "" : email;
     }
 
-    private void setBtnCreateRoutineListener(Button btnCreateRoutine) {
+    private void setBtnCreateRoutineListener() {
         btnCreateRoutine.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, CreateRoutineActivity.class);
             startActivity(intent);
@@ -89,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void setBtnMyRoutinesListener(Button btnMyRoutines) {
+    private void setBtnMyRoutinesListener() {
         btnMyRoutines.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, MyRoutinesActivity.class);
             startActivity(intent);
@@ -97,12 +98,12 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void setTxtTitleHome(TextView txtTitle, User user) {
+    private void setTxtTitleHome() {
         String title = txtTitle.getResources().getString(R.string.title_home, user.getNome());
         txtTitle.setText(title);
     }
 
-    private void getUserRoutine(User user) {
+    private void getUserRoutine() {
         ArrayList<Routines> routinesArrayList = dbHelper.getAllRoutines(user);
 
         if (routinesArrayList == null || routinesArrayList.isEmpty()) {
@@ -138,5 +139,12 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void goBackToLoginWithLogout(SharedPreferences sharedPreferences) {
+        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        sharedPreferences.edit().clear().apply();
+        startActivity(intent);
+        finish();
     }
 }

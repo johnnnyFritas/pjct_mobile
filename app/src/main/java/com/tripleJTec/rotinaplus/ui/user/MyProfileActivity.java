@@ -39,8 +39,6 @@ public class MyProfileActivity extends AppCompatActivity {
     Button btnNameEditMyProfile;
     ImageView imgCreateRoutineBottomMenuIcon, imgBottomMenuIcon;
     User user;
-
-    // --- VARIÁVEIS DA CÂMERA ---
     ImageView imgMyProfile;
     Button btnPhotoEditMyProfile;
     private ActivityResultLauncher<String> requestPermissionLauncher;
@@ -66,27 +64,85 @@ public class MyProfileActivity extends AppCompatActivity {
         btnPhotoEditMyProfile = findViewById(R.id.btnPhotoEditMyProfile);
 
         // Checagens de usuário
-        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
-        String email = getEmailWithSharedPreferences(sharedPreferences);
-        user = dbHelper.getUser(email);
-        setTxtTitleMyProfile(user);
-
-        // Funções de clique normais
-        setImgCreateRoutineBottomMenuIconListener();
-        setImgBottomMenuIconListener();
-        setBtnNameEditMyProfileListener();
-
-        // --- INICIALIZAÇÃO DA CÂMERA E CARREGAMENTO DA FOTO ---
-        inicializarLaunchersCamera();
-        carregarFotoSalva();
-
-        // Evento de clique no botão de tirar foto
-        btnPhotoEditMyProfile.setOnClickListener(v -> verificarPermissaoEAbrirCamera());
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            String email = getEmailWithSharedPreferences(sharedPreferences);
+            user = dbHelper.getUser(email);
+            if (user != null) {
+                setTxtTitleMyProfile();
+                setImgCreateRoutineBottomMenuIconListener();
+                setImgBottomMenuIconListener();
+                setBtnNameEditMyProfileListener();
+                inicializarLaunchersCamera();
+                carregarFotoSalva();
+                setBtnPhotoEditMyProfileListener();
+            } else {
+                goBackToLoginWithLogout(sharedPreferences);
+            }
+        }else {
+            goBackToLoginWithLogout(sharedPreferences);
+        }
     }
 
-    // ==============================================================
-    // LÓGICA DA CÂMERA E SALVAMENTO NO BANCO
-    // ==============================================================
+    private void setImgCreateRoutineBottomMenuIconListener() {
+        imgCreateRoutineBottomMenuIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(MyProfileActivity.this, CreateRoutineActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void setImgBottomMenuIconListener() {
+        imgBottomMenuIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
+        String email = sharedPreferences.getString("email", "E-mail não salvo");
+        return email.equals("E-mail não salvo") ? "" : email;
+    }
+
+    private void setTxtTitleMyProfile() {
+        txtNameMyProfile.setText(user.getNome());
+    }
+
+    private void setBtnNameEditMyProfileListener() {
+        btnNameEditMyProfile.setOnClickListener(v -> {
+            String newName = edtTxtNameMyProfile.getText().toString();
+
+            if (newName.isEmpty()) {
+                Toast.makeText(this, "Preisa inserir um nome para alterá-lo", Toast.LENGTH_LONG).show();
+            } else {
+                boolean sucesso = dbHelper.updateUser(new User(user.getId(), newName, user.getEmail(), user.getSenha()));
+
+                if (sucesso) {
+                    setLog(1, this.getLocalClassName(), "Usuário atualizado");
+                    Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
+    private void setLog(Integer idLogType, String className, String message) {
+        switch (idLogType) {
+            case 1:
+                Log.d(className, message);
+                break;
+            case 2:
+                Log.e(className, message);
+                break;
+            default:
+                Log.e(className, "Só são permitidos 1 ou 2 como id para o log");
+        }
+    }
+
+    private void setBtnPhotoEditMyProfileListener() {
+        btnPhotoEditMyProfile.setOnClickListener(v -> verificarPermissaoEAbrirCamera());
+    }
 
     private void inicializarLaunchersCamera() {
         // 1. O que acontece se o usuário aceitar a permissão da câmera?
@@ -146,10 +202,6 @@ public class MyProfileActivity extends AppCompatActivity {
         }
     }
 
-    // ==============================================================
-    // CONVERSORES DE IMAGEM
-    // ==============================================================
-
     private String converterBitmapParaBase64(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -162,72 +214,10 @@ public class MyProfileActivity extends AppCompatActivity {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
-    // ==============================================================
-    // LÓGICA PADRÃO DA TELA (FEITA PELO SEU AMIGO)
-    // ==============================================================
-
-    private void setImgCreateRoutineBottomMenuIconListener() {
-        imgCreateRoutineBottomMenuIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(MyProfileActivity.this, CreateRoutineActivity.class);
-            startActivity(intent);
-            finish();
-        });
-    }
-
-    private void setImgBottomMenuIconListener() {
-        imgBottomMenuIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        });
-    }
-
-    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
-        if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
-            Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
-        String email = sharedPreferences.getString("email", "E-mail não salvo");
-        return email.equals("E-mail não salvo") ? "" : email;
-    }
-
-    private void setTxtTitleMyProfile(User user) {
-        txtNameMyProfile.setText(user.getNome());
-    }
-
-    private void setBtnNameEditMyProfileListener() {
-        btnNameEditMyProfile.setOnClickListener(v -> {
-            String newName = edtTxtNameMyProfile.getText().toString();
-
-            if (newName.isEmpty()) {
-                Toast.makeText(this, "Preisa inserir um nome para alterá-lo", Toast.LENGTH_LONG).show();
-            } else {
-                boolean sucesso = dbHelper.updateUser(new User(user.getId(), newName, user.getEmail(), user.getSenha()));
-
-                if (sucesso) {
-                    setLog(1, this.getLocalClassName(), "Usuário atualizado");
-                    Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
-    }
-
-    private void setLog(Integer idLogType, String className, String message) {
-        switch (idLogType) {
-            case 1:
-                Log.d(className, message);
-                break;
-            case 2:
-                Log.e(className, message);
-                break;
-            default:
-                Log.e(className, "Só são permitidos 1 ou 2 como id para o log");
-        }
+    private void goBackToLoginWithLogout(SharedPreferences sharedPreferences) {
+        Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
+        sharedPreferences.edit().clear().apply();
+        startActivity(intent);
+        finish();
     }
 }

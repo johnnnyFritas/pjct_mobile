@@ -52,14 +52,14 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
 
         // Funções
-        setEdtTxtNameOnTextChangedListener(edtTxtName);
-        setEdtTxtEmailOnTextChangedListener(edtTxtEmail);
-        setPassIconClickListener(edtTxtPass);
-        setGoToLoginClickListener(txtBackToLogin);
-        setBtnRegisterOnClickListener(btnRegister, sharedPreferences);
+        setEdtTxtNameOnTextChangedListener();
+        setEdtTxtEmailOnTextChangedListener();
+        setPassIconClickListener();
+        setGoToLoginClickListener();
+        setBtnRegisterOnClickListener(sharedPreferences);
     }
 
-    private void setEdtTxtNameOnTextChangedListener(EditText edtTxtName) {
+    private void setEdtTxtNameOnTextChangedListener() {
         edtTxtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void setEdtTxtEmailOnTextChangedListener(EditText edtTxtEmail) {
+    private void setEdtTxtEmailOnTextChangedListener() {
         edtTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setPassIconClickListener(EditText edtTxtPass) {
+    private void setPassIconClickListener() {
         edtTxtPass.setOnTouchListener( (view, motionEvent) -> {
 
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -134,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void setGoToLoginClickListener(TextView txtBackToLogin) {
+    private void setGoToLoginClickListener() {
         txtBackToLogin.setOnClickListener(view -> {
             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
             startActivity(intent);
@@ -142,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void setBtnRegisterOnClickListener(Button btnRegister, SharedPreferences sharedPreferences) {
+    private void setBtnRegisterOnClickListener(SharedPreferences sharedPreferences) {
         btnRegister.setOnClickListener(view -> {
             // Captura e limpa os textos digitados
             String nome = edtTxtName.getText().toString().trim();

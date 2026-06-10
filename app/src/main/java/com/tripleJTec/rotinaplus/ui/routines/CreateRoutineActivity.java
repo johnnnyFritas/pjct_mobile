@@ -79,31 +79,30 @@ public class CreateRoutineActivity extends AppCompatActivity {
         btnCreateRoutine = findViewById(R.id.btnCreateRoutine);
 
         //funções
-        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
-        String email = getEmailWithSharedPreferences(sharedPreferences);
-        user = dbHelper.getUser(email);
-        setEdtTxtDescriptionOnTextChangedListener();
-        setDescriptionIconClickListener();
-        setBtnCreateRoutineListener();
-        setGoToHomeClickListener();
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            String email = getEmailWithSharedPreferences(sharedPreferences);
+            user = dbHelper.getUser(email);
+            if (user != null) {
+                setEdtTxtDescriptionOnTextChangedListener();
+                setDescriptionIconClickListener();
+                setBtnCreateRoutineListener();
+                setGoToHomeClickListener();
 
-        if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)
-                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(
-                    new String[]{android.Manifest.permission.RECORD_AUDIO},
-                    1
-            );
-        }
+                if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)
+                        != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(
+                            new String[]{android.Manifest.permission.RECORD_AUDIO},
+                            1
+                    );
+                }
 
-        setImgRecordListener();
-        setImgPlayListener();
-    }
-
-    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
-        if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
-            Intent intent = new Intent(CreateRoutineActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+                setImgRecordListener();
+                setImgPlayListener();
+            } else {
+                goBackToLoginWithLogout(sharedPreferences);
+            }
+        } else {
+            goBackToLoginWithLogout(sharedPreferences);
         }
     }
 
@@ -353,5 +352,12 @@ public class CreateRoutineActivity extends AppCompatActivity {
         } catch (IOException e) {
             Toast.makeText(this, "Erro ao reproduzir: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void goBackToLoginWithLogout(SharedPreferences sharedPreferences) {
+        Intent intent = new Intent(CreateRoutineActivity.this, MainActivity.class);
+        sharedPreferences.edit().clear().apply();
+        startActivity(intent);
+        finish();
     }
 }

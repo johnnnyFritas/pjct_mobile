@@ -54,13 +54,18 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
         // Funções
-        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
-        setEdtTxtNameOnTextChangedListener(edtTxtEmail);
-        setEmailIconClickListener(edtTxtEmail);
-        setPassIconClickListener(edtTxtPass);
-        setGoToForgottenPassClickListener(txtPassForgotten);
-        setGoToRegisterClickListener(txtRegister);
-        setBtnLoginListener(btnLogin, sharedPreferences);
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            setEdtTxtNameOnTextChangedListener(edtTxtEmail);
+            setEmailIconClickListener(edtTxtEmail);
+            setPassIconClickListener(edtTxtPass);
+            setGoToForgottenPassClickListener(txtPassForgotten);
+            setGoToRegisterClickListener(txtRegister);
+            setBtnLoginListener(btnLogin, sharedPreferences);
+        }
     }
 
     private void setEdtTxtNameOnTextChangedListener(EditText edtTxtEmail) {
@@ -203,11 +208,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
-        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
 }

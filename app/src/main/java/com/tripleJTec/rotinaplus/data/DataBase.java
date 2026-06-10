@@ -16,7 +16,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "RotinaPlusDB";
     // Versão alterada para 4 para o Android recriar o banco com a coluna da foto
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     public DataBase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -86,6 +86,7 @@ public class DataBase extends SQLiteOpenHelper {
                 email = cursor.getString(emailId);
                 String senha = cursor.getString(senhaId);
 
+                cursor.close();
                 return new User(id, nome, email, senha);
             }
         }

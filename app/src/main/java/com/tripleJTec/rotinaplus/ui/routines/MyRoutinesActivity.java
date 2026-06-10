@@ -51,13 +51,20 @@ public class MyRoutinesActivity extends AppCompatActivity {
         layoutMyRoutines = findViewById(R.id.layoutMyRoutines);
 
         //funções
-        setImgCreateRoutineBottomMenuIconListener();
-        setImgBottomMenuIconListener();
-        setImgMyProfileBottomMenuIconListener();
-        checkUserAuthenticationWithSharedPreferences(sharedPreferences);
-        String email = getEmailWithSharedPreferences(sharedPreferences);
-        user = dbHelper.getUser(email);
-        setRoutines();
+        if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
+            String email = getEmailWithSharedPreferences(sharedPreferences);
+            user = dbHelper.getUser(email);
+            if (user != null) {
+                setImgCreateRoutineBottomMenuIconListener();
+                setImgBottomMenuIconListener();
+                setImgMyProfileBottomMenuIconListener();
+                setRoutines();
+            } else {
+                goBackToLoginWithLogout(sharedPreferences);
+            }
+        } else {
+            goBackToLoginWithLogout(sharedPreferences);
+        }
     }
 
     private void setImgCreateRoutineBottomMenuIconListener() {
@@ -82,14 +89,6 @@ public class MyRoutinesActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-    }
-
-    private void checkUserAuthenticationWithSharedPreferences(SharedPreferences sharedPreferences) {
-        if (!dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
-            Intent intent = new Intent(MyRoutinesActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private String getEmailWithSharedPreferences(SharedPreferences sharedPreferences) {
@@ -202,5 +201,12 @@ public class MyRoutinesActivity extends AppCompatActivity {
                 layoutThird.addView(hourRoutine);
             }
         }
+    }
+
+    private void goBackToLoginWithLogout(SharedPreferences sharedPreferences) {
+        Intent intent = new Intent(MyRoutinesActivity.this, MainActivity.class);
+        sharedPreferences.edit().clear().apply();
+        startActivity(intent);
+        finish();
     }
 }
