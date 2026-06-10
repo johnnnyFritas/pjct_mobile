@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_light_1">
+
+    <LinearLayout
+        android:id="@+id/layoutMyRoutines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="25dp">
+
+        <TextView
+            android:id="@+id/txtTitleCurrentRoutinesMyRoutines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:text="@string/current_routines_plural"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/blue_light_2"
+            android:letterSpacing=".1"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:id="@+id/txtNoRoutinesMyRoutines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_light_3"
+            android:textSize="25sp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:letterSpacing=".1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/frameShapeDrawableBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp"
+        android:background="@drawable/shape_home_2"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imgBottomMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_home_png_description"
+            android:src="@drawable/icon_home"
+            android:layout_gravity="start"
+            android:layout_marginEnd="25dp"/>
+
+        <ImageView
+            android:id="@+id/imgCreateRoutineBottomMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_create_routine_png_description"
+            android:src="@drawable/icon_create_routine"/>
+
+        <ImageView
+            android:id="@+id/imgProfileBottomMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_profile_1_png_description"
+            android:src="@drawable/icon_profile_1"
+            android:layout_marginStart="25dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

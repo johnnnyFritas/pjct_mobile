@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_light_1">
+
+    <TextView
+        android:id="@+id/txtTitleCreateRoutine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layoutCreateRoutine"
+        android:text="@string/title_create_routine"
+        android:textSize="25sp"
+        android:textColor="@color/blue_light_2"
+        android:fontFamily="@font/poppins_bold"
+        android:letterSpacing=".1"
+        android:layout_marginTop="45dp"/>
+
+    <LinearLayout
+        android:id="@+id/layoutCreateRoutine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleCreateRoutine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="25dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edtTxtCreateRoutineName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autofillHints="name"
+            android:background="@drawable/shape_edt_txt_main"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="@string/create_routine_name"
+            android:inputType="text"
+            android:letterSpacing=".1"
+            android:padding="11dp"
+            android:textAlignment="center"
+            android:textColor="@color/gray_light_1"
+            android:textColorHint="@color/gray_light_1"
+            android:textSize="16sp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/edtTxtCreateRoutineDescription"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:hint="@string/create_routine_description"
+            android:textColorHint="@color/gray_light_1"
+            android:textColor="@color/gray_light_1"
+            android:textSize="16sp"
+            android:background="@drawable/shape_edt_txt_main"
+            android:autofillHints="username"
+            android:padding="11dp"
+            android:layout_marginTop="10dp"
+            android:letterSpacing=".1"
+            android:gravity="top|center"
+            android:singleLine="false"
+            android:scrollHorizontally="false"
+            android:fontFamily="@font/poppins_medium"
+            android:drawableEnd="@drawable/icon_erase_all_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <ImageButton
+                android:id="@+id/imgRecord"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@android:drawable/ic_btn_speak_now"
+                android:background="@drawable/button_main"
+                android:contentDescription="@string/record_audio"
+                android:layout_marginEnd="20dp"/>
+
+            <ImageButton
+                android:id="@+id/imgPlay"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_main"
+                android:contentDescription="@string/play_audio"
+                android:enabled="false"
+                android:src="@android:drawable/ic_media_play" />
+
+            <TextView
+                android:id="@+id/txtAudioWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:letterSpacing=".1"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:layout_marginStart="20dp"/>
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/edtTxtCreateRoutineHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="@string/create_routine_hour"
+            android:textColorHint="@color/gray_light_1"
+            android:textColor="@color/gray_light_1"
+            android:textSize="16sp"
+            android:background="@drawable/shape_edt_txt_main"
+            android:autofillHints=""
+            android:padding="11dp"
+            android:layout_marginTop="10dp"
+            android:letterSpacing=".1"
+            android:textAlignment="center"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/txtCreateRoutineHourWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/poppins_medium"
+            android:letterSpacing=".1"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/titleCreateRoutineDaysOfWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="@string/create_routine_days_of_week"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:letterSpacing=".1"
+            android:textAlignment="center"/>
+
+        <LinearLayout
+            android:id="@+id/layoutCreateRoutineDaysOfWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:id="@+id/layoutCreateRoutineDaysOfWeekLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineSunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sunday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"/>
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"/>
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tuesday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"/>
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineWednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wednesday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutCreateRoutineDaysOfWeekRigth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineThursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/thursday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"
+                    android:layout_gravity="start"/>
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineFriday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/friday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"
+                    android:layout_gravity="start"/>
+
+                <CheckBox
+                    android:id="@+id/checkboxCreateRoutineSaturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/saturday"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_light_1"
+                    android:fontFamily="@font/poppins_bold"
+                    android:letterSpacing=".1"
+                    android:layout_gravity="start"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCreateRoutine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingVertical="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="@string/title_create_routine"
+            android:fontFamily="@font/poppins_bold"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_main"
+            android:letterSpacing=".1"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/txtCreateRoutineBackToHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="@string/back_to_home"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:letterSpacing=".1" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

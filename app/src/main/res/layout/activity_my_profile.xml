@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_light_1">
+
+    <TextView
+        android:id="@+id/txtTitleMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:text="@string/title_my_profile"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/blue_light_2"
+        android:letterSpacing=".1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"/>
+
+    <LinearLayout
+        android:id="@+id/layoutMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleMyProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="40dp">
+
+        <TextView
+            android:id="@+id/txtLabelNameMyProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/label_name"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/blue_light_2"
+            android:letterSpacing=".1"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/txtNameMyProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
+            android:letterSpacing=".1"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edtTxtNameMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="@string/new_name"
+        android:textColorHint="@color/gray_light_1"
+        android:textColor="@color/gray_light_1"
+        android:textSize="15sp"
+        android:background="@drawable/shape_edt_txt_main"
+        android:autofillHints="emailAddress"
+        android:padding="20dp"
+        android:letterSpacing=".1"
+        app:layout_constraintTop_toBottomOf="@+id/layoutMyProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnNameEditMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_main"
+        android:text="@string/edit"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_extra_bold"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtNameMyProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/imgMyProfileOverlay"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNameEditMyProfile"
+        android:src="@drawable/shape_overlay"
+        android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:id="@+id/imgMyProfile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintEnd_toEndOf="@+id/imgMyProfileOverlay"
+        app:layout_constraintStart_toStartOf="@+id/imgMyProfileOverlay"
+        app:layout_constraintTop_toTopOf="@+id/imgMyProfileOverlay"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMyProfileOverlay"/>
+
+    <Button
+        android:id="@+id/btnPhotoEditMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_main"
+        app:layout_constraintTop_toBottomOf="@+id/imgMyProfileOverlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:text="@string/edit"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_extra_bold"/>
+
+    <LinearLayout
+        android:id="@+id/frameShapeDrawableBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp"
+        android:background="@drawable/shape_home_2"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imgBottomMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_home_png_description"
+            android:src="@drawable/icon_home"
+            android:layout_gravity="start"
+            android:layout_marginEnd="25dp"/>
+
+        <ImageView
+            android:id="@+id/imgCreateRoutineBottomMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_create_routine_png_description"
+            android:src="@drawable/icon_create_routine"/>
+
+        <ImageView
+            android:id="@+id/imgProfileBottomMenuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_profile_1_png_description"
+            android:src="@drawable/icon_profile_1"
+            android:layout_marginStart="25dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
