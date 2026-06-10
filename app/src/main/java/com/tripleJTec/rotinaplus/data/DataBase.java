@@ -105,6 +105,21 @@ public class DataBase extends SQLiteOpenHelper {
         return !email.equals("E-mail não salvo");
     }
 
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = "email = ?";
+        String[] whereArgs = new String[]{
+                user.getEmail()
+        };
+
+        ContentValues values = new ContentValues();
+        values.put("nome", user.getNome());
+
+        long result = db.update("usuarios", values, whereClause, whereArgs);
+        return result != -1;
+    }
+
     //métodos routines
     public boolean insertRoutine(Routines routine) {
         SQLiteDatabase db = getWritableDatabase();
@@ -160,6 +175,41 @@ public class DataBase extends SQLiteOpenHelper {
         }
 
 
+
+        cursor.close();
+        return null;
+    }
+
+    public Routines getRoutine(String name, String hour, String[] daysOfWeek) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String daysFormatted = String.join(", ", daysOfWeek);
+
+        String query = "SELECT * FROM rotinas WHERE nome = ? AND dias_da_semana = ? AND hora = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{name, daysFormatted, hour});
+
+        if (cursor.getCount() == 1) {
+            if (cursor.moveToFirst()) {
+                int idId = cursor.getColumnIndex("id");
+                int nomeId = cursor.getColumnIndex("nome");
+                int descricaoId = cursor.getColumnIndex("descricao");
+                int horaId = cursor.getColumnIndex("hora");
+                int repeteId = cursor.getColumnIndex("repete");
+                int concluidaId = cursor.getColumnIndex("concluida");
+                int idUsuarioId = cursor.getColumnIndex("id_usuario");
+
+                String id = cursor.getString(idId);
+                String nome = cursor.getString(nomeId);
+                String descriao = cursor.getString(descricaoId);
+                String hora = cursor.getString(horaId);
+                Boolean repete = cursor.getInt(repeteId) == 1;
+                Boolean concluida = cursor.getInt(concluidaId) == 1;
+                String idUsuario = cursor.getString(idUsuarioId);
+
+                return new Routines(id, nome, descriao, daysOfWeek, hora, repete, concluida, idUsuario);
+            }
+        }
 
         cursor.close();
         return null;

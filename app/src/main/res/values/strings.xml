@@ -20,6 +20,7 @@
     <string name="my_routines">Minhas rotinas</string>
     <string name="see_routines">Ver rotinas</string>
     <string name="current_routines">Rotina recente</string>
+    <string name="current_routines_plural">Rotinas:</string>
     <string name="icon_home_png_description">Icone de casa, indicando que ao clicar vai para a tela home.</string>
     <string name="icon_create_routine_png_description">Icone de + circulado, indicando que ao clicar cria uma nova rotina.</string>
     <string name="icon_profile_1_png_description">Icone de humano, indicando que ao clicar entra no perfil do usuário.</string>
@@ -44,4 +45,8 @@
     <string name="label_name_current_routine">Nome: </string>
     <string name="label_description_current_routine">Descrição: </string>
     <string name="label_hour_current_routine">Hora: </string>
+    <string name="title_my_profile">Seu Perfil:</string>
+    <string name="label_name_my_profile">Nome: </string>
+    <string name="edit">Editar</string>
+    <string name="new_name">Insira seu novo nome do perfil</string>
 </resources>

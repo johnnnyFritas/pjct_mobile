@@ -1,4 +1,4 @@
-package com.tripleJTec.rotinaplus.ui.home;
+package com.tripleJTec.rotinaplus.ui.routines;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -26,6 +25,7 @@ import com.tripleJTec.rotinaplus.data.DataBase;
 import com.tripleJTec.rotinaplus.model.Routines;
 import com.tripleJTec.rotinaplus.model.User;
 import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
+import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
 
 import java.io.IOException;
 

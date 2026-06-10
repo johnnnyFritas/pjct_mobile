@@ -45,6 +45,13 @@
             android:name=".ui.ProfileActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.auth.ForgottenPassActivity"/>
+        <activity android:name=".ui.auth.RegisterActivity"/>
+        <activity android:name=".ui.home.HomeActivity"/>
+        <activity android:name=".ui.routines.MyRoutinesActivity"/>
+        <activity android:name=".ui.routines.CreateRoutineActivity"/>
+        <activity android:name=".ui.routines.Routine"/>
+        <activity android:name=".ui.user.MyProfileActivity"/>
     </application>
 
 </manifest>
