@@ -53,11 +53,11 @@ public class MyRoutinesActivity extends AppCompatActivity {
         //funções
         setImgCreateRoutineBottomMenuIconListener();
         setImgBottomMenuIconListener();
+        setImgMyProfileBottomMenuIconListener();
         checkUserAuthenticationWithSharedPreferences(sharedPreferences);
         String email = getEmailWithSharedPreferences(sharedPreferences);
         user = dbHelper.getUser(email);
         setRoutines();
-        setImgMyProfileBottomMenuIconListener();
     }
 
     private void setImgCreateRoutineBottomMenuIconListener() {
@@ -122,6 +122,15 @@ public class MyRoutinesActivity extends AppCompatActivity {
                 layout.setPadding(5, 5, 5, 5);
                 layout.setGravity(Gravity.CENTER);
                 layoutMyRoutines.addView(layout);
+
+                layout.setOnClickListener(v -> {
+                    Intent intent = new Intent(MyRoutinesActivity.this, Routine.class);
+                    intent.putExtra("name", routine.getName());
+                    intent.putExtra("daysOfWeek", routine.getDaysOfWeek());
+                    intent.putExtra("hour", routine.getHour());
+                    startActivity(intent);
+                    finish();
+                });
 
                 //define o layout secundario e terciario
                 LinearLayout layoutSecond = new LinearLayout(this);

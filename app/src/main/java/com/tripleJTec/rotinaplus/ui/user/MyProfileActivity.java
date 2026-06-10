@@ -90,7 +90,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void setTxtTitleMyProfile(User user) {
-        txtNameMyProfile.setText(txtNameMyProfile.getResources().getString(R.string.name_my_profile, user.getNome()));
+        txtNameMyProfile.setText(user.getNome());
     }
 
     private void setBtnNameEditMyProfileListener() {
