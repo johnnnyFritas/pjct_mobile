@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tripleJTec.rotinaplus.R;
@@ -39,7 +38,8 @@ public class CreateRoutineActivity extends AppCompatActivity {
     Integer click = 0;
     DataBase dbHelper;
     User user;
-    //audio
+
+    // Áudio
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
     private String audioFile;
@@ -47,15 +47,14 @@ public class CreateRoutineActivity extends AppCompatActivity {
     private boolean hasRecording = false;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_routine);
 
         dbHelper = new DataBase(this);
-
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_shared_preferences_name), MODE_PRIVATE);
 
-        //iniciando views
+        // Iniciando views
         edtTxtName = findViewById(R.id.edtTxtCreateRoutineName);
         edtTxtDescription = findViewById(R.id.edtTxtCreateRoutineDescription);
         edtTxtHour = findViewById(R.id.edtTxtCreateRoutineHour);
@@ -72,13 +71,13 @@ public class CreateRoutineActivity extends AppCompatActivity {
         checkBoxFriday = findViewById(R.id.checkboxCreateRoutineFriday);
         checkBoxSaturday = findViewById(R.id.checkboxCreateRoutineSaturday);
 
-        //audio
-        audioFile = getExternalFilesDir(null)+ "/rotina_audio.3gp";
+        // Configuração do Áudio
+        audioFile = getExternalFilesDir(null) + "/rotina_audio.3gp";
         imgRecord = findViewById(R.id.imgRecord);
         imgPlay = findViewById(R.id.imgPlay);
         btnCreateRoutine = findViewById(R.id.btnCreateRoutine);
 
-        //funções
+        // Funções de inicialização e segurança
         if (dbHelper.checkUserAuthenticationWithSharedPreferences(sharedPreferences)) {
             String email = getEmailWithSharedPreferences(sharedPreferences);
             user = dbHelper.getUser(email);
@@ -130,13 +129,14 @@ public class CreateRoutineActivity extends AppCompatActivity {
         });
     }
 
-    protected void onStop(){
+    @Override
+    protected void onStop() {
         super.onStop();
-        if(mediaRecorder != null){
+        if (mediaRecorder != null) {
             mediaRecorder.release();
             mediaRecorder = null;
         }
-        if(mediaPlayer != null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -158,11 +158,9 @@ public class CreateRoutineActivity extends AppCompatActivity {
                 float initialCompoundWidth = viewWidth - iconWidth - pixelsInteger;
 
                 float clickable = view.getHeight() - view.getPaddingTop() - view.getPaddingBottom();
-                //area que não é drawable
                 float blankSpace = clickable - edtTxtDescription.getCompoundDrawables()[2].getBounds().height();
-                //da area vazia que sobra, metade dela está acima do drawable e metade está abaixo. Pois o drawable está sempre exatamente no meio da veio (verticalmente).
-                float part = blankSpace/2;
-                float initialCompoundHeight =  edtTxtDescription.getPaddingTop() + part;
+                float part = blankSpace / 2;
+                float initialCompoundHeight = edtTxtDescription.getPaddingTop() + part;
                 float finalCompoundHeight = initialCompoundHeight + edtTxtDescription.getCompoundDrawables()[2].getBounds().height();
 
                 if (motionEvent.getX() >= initialCompoundWidth && (motionEvent.getY() >= initialCompoundHeight && motionEvent.getY() <= finalCompoundHeight)) {
@@ -170,7 +168,6 @@ public class CreateRoutineActivity extends AppCompatActivity {
                     return true;
                 }
             }
-
             return false;
         }));
     }
@@ -237,55 +234,35 @@ public class CreateRoutineActivity extends AppCompatActivity {
         });
     }
 
+    // --- CORRIGIDO: EVENTO DE TOQUE DA GRAVAÇÃO DE ÁUDIO ---
     @SuppressLint("ClickableViewAccessibility")
     private void setImgRecordListener() {
-        final long[] pressStartTime = {0};
-
         imgRecord.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                pressStartTime[0] = System.currentTimeMillis();
-                startRecording();
-
-                return true;
-            } else {
-                long pressDuration = System.currentTimeMillis() - pressStartTime[0];
-
-                if (pressDuration < 500) {
-                    // tempo mínimo que não grava
-                    if (mediaRecorder != null) {
-                        try {
-                            mediaRecorder.stop();
-                        } catch (Exception ignored) {}
-                        mediaRecorder.release();
-                        mediaRecorder = null;
-                        isRecording = false;
-
-                        txtAudioWarning.setText(getString(R.string.audio_warning));
-                        imgRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
-
-                        return true;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (!isRecording) {
+                        startRecording();
                     }
-                    Toast.makeText(this, "Segure para gravar!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Gravação válida
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
                     if (isRecording) {
                         txtAudioWarning.setVisibility(TextView.GONE);
-
                         stopRecording();
-
-                        return true;
                     }
-                }
+                    return true;
             }
             return false;
         });
     }
 
+    // --- RESTAURADO: EVENTO DO BOTÃO DE REPRODUÇÃO (PLAY) ---
     @SuppressLint("ClickableViewAccessibility")
     private void setImgPlayListener() {
         imgPlay.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (hasRecording && audioFile !=null) {
+                if (hasRecording && audioFile != null) {
                     playRecording();
                 } else {
                     Toast.makeText(this, "Nenhum áudio gravado ainda", Toast.LENGTH_SHORT).show();
@@ -295,7 +272,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
         });
     }
 
-    private void startRecording(){
+    private void startRecording() {
         try {
             mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -306,18 +283,20 @@ public class CreateRoutineActivity extends AppCompatActivity {
             mediaRecorder.start();
 
             isRecording = true;
-
             imgRecord.setImageResource(android.R.drawable.ic_media_pause);
-
             Toast.makeText(this, "Gravando....", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(this, "Erro ao gravar áudio", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void stopRecording(){
+    private void stopRecording() {
         if (mediaRecorder != null) {
-            mediaRecorder.stop();
+            try {
+                mediaRecorder.stop();
+            } catch (RuntimeException stopException) {
+                // Captura erro caso o tempo de gravação tenha sido curto demais
+            }
             mediaRecorder.release();
             mediaRecorder = null;
 
@@ -326,8 +305,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
 
             imgRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
             imgPlay.setEnabled(true);
-
-            Toast.makeText(this,"Áudio salvo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Áudio salvo", Toast.LENGTH_SHORT).show();
         }
     }
 
