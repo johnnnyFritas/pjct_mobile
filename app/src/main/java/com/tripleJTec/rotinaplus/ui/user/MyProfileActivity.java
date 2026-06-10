@@ -1,8 +1,14 @@
 package com.tripleJTec.rotinaplus.ui.user;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,17 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.tripleJTec.rotinaplus.R;
 import com.tripleJTec.rotinaplus.data.DataBase;
 import com.tripleJTec.rotinaplus.model.User;
 import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
-import com.tripleJTec.rotinaplus.ui.auth.RegisterActivity;
 import com.tripleJTec.rotinaplus.ui.home.HomeActivity;
 import com.tripleJTec.rotinaplus.ui.routines.CreateRoutineActivity;
-import com.tripleJTec.rotinaplus.ui.routines.MyRoutinesActivity;
+
+import java.io.ByteArrayOutputStream;
 
 public class MyProfileActivity extends AppCompatActivity {
 
@@ -31,34 +40,131 @@ public class MyProfileActivity extends AppCompatActivity {
     ImageView imgCreateRoutineBottomMenuIcon, imgBottomMenuIcon;
     User user;
 
+    // --- VARIÁVEIS DA CÂMERA ---
+    ImageView imgMyProfile;
+    Button btnPhotoEditMyProfile;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
+    private ActivityResultLauncher<Intent> takePictureLauncher;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
 
         dbHelper = new DataBase(this);
-
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_shared_preferences_name), MODE_PRIVATE);
 
-        //iniciando views
+        // Iniciando views normais
         txtNameMyProfile = findViewById(R.id.txtNameMyProfile);
-
         edtTxtNameMyProfile = findViewById(R.id.edtTxtNameMyProfile);
-
         imgCreateRoutineBottomMenuIcon = findViewById(R.id.imgCreateRoutineBottomMenuIcon);
         imgBottomMenuIcon = findViewById(R.id.imgBottomMenuIcon);
-
         btnNameEditMyProfile = findViewById(R.id.btnNameEditMyProfile);
 
-        //funções
-        setImgCreateRoutineBottomMenuIconListener();
-        setImgBottomMenuIconListener();
+        // Iniciando views da câmera
+        imgMyProfile = findViewById(R.id.imgMyProfile);
+        btnPhotoEditMyProfile = findViewById(R.id.btnPhotoEditMyProfile);
+
+        // Checagens de usuário
         checkUserAuthenticationWithSharedPreferences(sharedPreferences);
         String email = getEmailWithSharedPreferences(sharedPreferences);
         user = dbHelper.getUser(email);
         setTxtTitleMyProfile(user);
+
+        // Funções de clique normais
+        setImgCreateRoutineBottomMenuIconListener();
+        setImgBottomMenuIconListener();
         setBtnNameEditMyProfileListener();
+
+        // --- INICIALIZAÇÃO DA CÂMERA E CARREGAMENTO DA FOTO ---
+        inicializarLaunchersCamera();
+        carregarFotoSalva();
+
+        // Evento de clique no botão de tirar foto
+        btnPhotoEditMyProfile.setOnClickListener(v -> verificarPermissaoEAbrirCamera());
     }
+
+    // ==============================================================
+    // LÓGICA DA CÂMERA E SALVAMENTO NO BANCO
+    // ==============================================================
+
+    private void inicializarLaunchersCamera() {
+        // 1. O que acontece se o usuário aceitar a permissão da câmera?
+        requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                abrirCamera();
+            } else {
+                Toast.makeText(this, "Permissão da câmera é necessária para tirar fotos.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 2. O que acontece quando a foto for tirada?
+        takePictureLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                Bundle extras = result.getData().getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                // Coloca a foto na tela
+                imgMyProfile.setImageBitmap(imageBitmap);
+
+                // Converte a foto para texto e salva no banco usando o e-mail do usuário!
+                String fotoBase64 = converterBitmapParaBase64(imageBitmap);
+                boolean salvou = dbHelper.salvarFotoPerfil(user.getEmail(), fotoBase64);
+
+                if (salvou) {
+                    Toast.makeText(this, "Foto de perfil salva com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Erro ao salvar a foto no banco.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void verificarPermissaoEAbrirCamera() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            abrirCamera(); // Se já tem permissão, abre direto
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA); // Se não tem, pede pro usuário
+        }
+    }
+
+    private void abrirCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureLauncher.launch(takePictureIntent);
+        }
+    }
+
+    private void carregarFotoSalva() {
+        // Busca a foto em texto no banco usando o e-mail do usuário
+        String fotoBase64 = dbHelper.getFotoPerfil(user.getEmail());
+
+        if (fotoBase64 != null && !fotoBase64.isEmpty()) {
+            // Se tiver foto, converte de volta para imagem e coloca no círculo
+            Bitmap bitmap = converterBase64ParaBitmap(fotoBase64);
+            imgMyProfile.setImageBitmap(bitmap);
+        }
+    }
+
+    // ==============================================================
+    // CONVERSORES DE IMAGEM
+    // ==============================================================
+
+    private String converterBitmapParaBase64(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    private Bitmap converterBase64ParaBitmap(String base64String) {
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+    // ==============================================================
+    // LÓGICA PADRÃO DA TELA (FEITA PELO SEU AMIGO)
+    // ==============================================================
 
     private void setImgCreateRoutineBottomMenuIconListener() {
         imgCreateRoutineBottomMenuIcon.setOnClickListener(v -> {
@@ -104,8 +210,6 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 if (sucesso) {
                     setLog(1, this.getLocalClassName(), "Usuário atualizado");
-
-                    //Vai para a home page
                     Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();

@@ -1,13 +1,11 @@
 package com.tripleJTec.rotinaplus.data;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
-import android.util.Log;
-
-import androidx.core.database.CursorWindowCompat;
 
 import com.tripleJTec.rotinaplus.model.Routines;
 import com.tripleJTec.rotinaplus.model.User;
@@ -17,9 +15,8 @@ import java.util.ArrayList;
 public class DataBase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "RotinaPlusDB";
-    // Mudamos a versão para 3. Isso avisa ao Android que a estrutura mudou
-    // e aciona o método onUpgrade para recriar a tabela.
-    private static final int DATABASE_VERSION = 3;
+    // Versão alterada para 4 para o Android recriar o banco com a coluna da foto
+    private static final int DATABASE_VERSION = 4;
 
     public DataBase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,7 +28,8 @@ public class DataBase extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nome TEXT NOT NULL, " +
                 "email TEXT UNIQUE NOT NULL, " +
-                "senha TEXT NOT NULL)";
+                "senha TEXT NOT NULL, " +
+                "foto_perfil TEXT)"; // COLUNA DA FOTO ADICIONADA AQUI
 
         db.execSQL(createTableUsuarios);
 
@@ -116,7 +114,32 @@ public class DataBase extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    //métodos routines
+    public boolean salvarFotoPerfil(String emailUsuario, String fotoEmTextoBase64) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("foto_perfil", fotoEmTextoBase64);
+
+        long result = db.update("usuarios", values, "email = ?", new String[]{emailUsuario});
+        return result != -1;
+    }
+
+    public String getFotoPerfil(String emailUsuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT foto_perfil FROM usuarios WHERE email = ?", new String[]{emailUsuario});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int fotoId = cursor.getColumnIndex("foto_perfil");
+            String foto = cursor.getString(fotoId);
+            cursor.close();
+            return foto;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        return null;
+    }
+
     public boolean insertRoutine(Routines routine) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -215,7 +238,7 @@ public class DataBase extends SQLiteOpenHelper {
         String whereClause = "nome = ? AND dias_da_semana = ? AND hora = ?";
         String[] whereArgs = new String[]{
                 routine.getName(),
-                routine.getDaysOfWeek(),
+                String.join(", ", routine.getDaysOfWeek()),
                 routine.getHour()
         };
 
@@ -233,7 +256,7 @@ public class DataBase extends SQLiteOpenHelper {
         String whereClause = "nome = ? AND dias_da_semana = ? AND hora = ?";
         String[] whereArgs = new String[]{
                 routine.getName(),
-                routine.getDaysOfWeek(),
+                String.join(", ", routine.getDaysOfWeek()),
                 routine.getHour()
         };
 
