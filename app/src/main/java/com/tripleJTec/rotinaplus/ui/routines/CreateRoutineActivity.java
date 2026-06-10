@@ -38,7 +38,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
     ImageButton imgPlay, imgRecord;
     Integer click = 0;
     DataBase dbHelper;
-
+    User user;
     //audio
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
@@ -81,11 +81,11 @@ public class CreateRoutineActivity extends AppCompatActivity {
         //funções
         checkUserAuthenticationWithSharedPreferences(sharedPreferences);
         String email = getEmailWithSharedPreferences(sharedPreferences);
-        User user = dbHelper.getUser(email);
-        setEdtTxtDescriptionOnTextChangedListener(edtTxtDescription);
-        setDescriptionIconClickListener(edtTxtDescription);
-        setBtnCreateRoutineListener(btnCreateRoutine, txtHourWarning, user);
-        setGoToHomeClickListener(txtBackToHome);
+        user = dbHelper.getUser(email);
+        setEdtTxtDescriptionOnTextChangedListener();
+        setDescriptionIconClickListener();
+        setBtnCreateRoutineListener();
+        setGoToHomeClickListener();
 
         if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)
                 != android.content.pm.PackageManager.PERMISSION_GRANTED) {
@@ -112,7 +112,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
         return email.equals("E-mail não salvo") ? "" : email;
     }
 
-    private void setEdtTxtDescriptionOnTextChangedListener(EditText edtTxtDescription) {
+    private void setEdtTxtDescriptionOnTextChangedListener() {
         edtTxtDescription.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -144,7 +144,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setDescriptionIconClickListener(EditText edtTxtDescription) {
+    private void setDescriptionIconClickListener() {
         edtTxtDescription.setOnTouchListener(((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 float viewWidth = view.getWidth();
@@ -176,10 +176,9 @@ public class CreateRoutineActivity extends AppCompatActivity {
         }));
     }
 
-    private void setBtnCreateRoutineListener(Button btnCreateRoutine, TextView txtHourWarning, User user) {
+    private void setBtnCreateRoutineListener() {
         btnCreateRoutine.setOnClickListener(v -> {
             if (validateHour()) {
-                txtHourWarning.setVisibility(TextView.VISIBLE);
 
                 String sunday = checkBoxSunday.isChecked() ? "0" : null;
                 String monday = checkBoxMonday.isChecked() ? "1" : null;
@@ -207,14 +206,18 @@ public class CreateRoutineActivity extends AppCompatActivity {
                     }
                 }
 
-                boolean createRoutineBool = dbHelper.insertRoutine(new Routines(null, edtTxtName.getText().toString(), edtTxtDescription.getText().toString(), daysOfWeek, edtTxtHour.getText().toString(), repeatable, false, user.getId()));
+                if (edtTxtDescription.getText().toString().length() > 75) {
+                    Toast.makeText(this, "A descrição deve ter 75 carácteres ou menos", Toast.LENGTH_LONG).show();
+                } else {
+                    boolean createRoutineBool = dbHelper.insertRoutine(new Routines(null, edtTxtName.getText().toString(), edtTxtDescription.getText().toString(), daysOfWeek, edtTxtHour.getText().toString(), repeatable, false, user.getId()));
 
-                if (createRoutineBool) {
-                    Toast.makeText(getApplicationContext(), "Rotina criada!", Toast.LENGTH_LONG).show();
+                    if (createRoutineBool) {
+                        Toast.makeText(getApplicationContext(), "Rotina criada!", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(CreateRoutineActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                        Intent intent = new Intent(CreateRoutineActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             } else {
                 txtHourWarning.setText(getString(R.string.invalid_hour));
@@ -227,7 +230,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
         return edtTxtHour.getText().toString().trim().matches(regex);
     }
 
-    private void setGoToHomeClickListener(TextView txtBackToHome) {
+    private void setGoToHomeClickListener() {
         txtBackToHome.setOnClickListener(v -> {
             Intent intent = new Intent(CreateRoutineActivity.this, HomeActivity.class);
             startActivity(intent);

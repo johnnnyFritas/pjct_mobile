@@ -103,7 +103,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 boolean sucesso = dbHelper.updateUser(new User(user.getId(), newName, user.getEmail(), user.getSenha()));
 
                 if (sucesso) {
-                    setLog(1, this.getLocalClassName(), "Usuário cadastrado");
+                    setLog(1, this.getLocalClassName(), "Usuário atualizado");
 
                     //Vai para a home page
                     Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);

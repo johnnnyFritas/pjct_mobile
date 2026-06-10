@@ -19,6 +19,7 @@ import com.tripleJTec.rotinaplus.model.User;
 import com.tripleJTec.rotinaplus.ui.auth.MainActivity;
 import com.tripleJTec.rotinaplus.ui.routines.CreateRoutineActivity;
 import com.tripleJTec.rotinaplus.ui.routines.MyRoutinesActivity;
+import com.tripleJTec.rotinaplus.ui.routines.Routine;
 import com.tripleJTec.rotinaplus.ui.user.MyProfileActivity;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         setBtnMyRoutinesListener(btnMyRoutines);
         User user = dbHelper.getUser(email);
         setTxtTitleHome(txtTitle, user);
-        getUserRoutines(user);
+        getUserRoutine(user);
         setImgCreateRoutineBottomMenuIconListener();
         setImgMyProfileBottomMenuIconListener();
     }
@@ -101,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         txtTitle.setText(title);
     }
 
-    private void getUserRoutines(User user) {
+    private void getUserRoutine(User user) {
         ArrayList<Routines> routinesArrayList = dbHelper.getAllRoutines(user);
 
         if (routinesArrayList == null || routinesArrayList.isEmpty()) {
@@ -111,6 +112,15 @@ public class HomeActivity extends AppCompatActivity {
             layoutRoutines.setVisibility(LinearLayout.VISIBLE);
             txtTitleCurrentRoutine.setText(routinesArrayList.get(routinesArrayList.size() - 1).getName());
             txtHourCurrentRoutine.setText(routinesArrayList.get(routinesArrayList.size() - 1).getHour());
+
+            layoutRoutines.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, Routine.class);
+                intent.putExtra("name", routinesArrayList.get(routinesArrayList.size() - 1).getName());
+                intent.putExtra("daysOfWeek", routinesArrayList.get(routinesArrayList.size() - 1).getDaysOfWeek());
+                intent.putExtra("hour", routinesArrayList.get(routinesArrayList.size() - 1).getHour());
+                startActivity(intent);
+                finish();
+            });
         }
     }
 

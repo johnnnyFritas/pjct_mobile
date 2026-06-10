@@ -208,4 +208,36 @@ public class DataBase extends SQLiteOpenHelper {
         cursor.close();
         return null;
     }
+
+    public boolean updateRoutine(Routines routine) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = "nome = ? AND dias_da_semana = ? AND hora = ?";
+        String[] whereArgs = new String[]{
+                routine.getName(),
+                routine.getDaysOfWeek(),
+                routine.getHour()
+        };
+
+        ContentValues values = new ContentValues();
+        values.put("descricao", routine.getDescricao());
+        values.put("hora", routine.getHour());
+
+        long result = db.update("rotinas", values, whereClause, whereArgs);
+        return result != -1;
+    }
+
+    public boolean deleteRoutine(Routines routine) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = "nome = ? AND dias_da_semana = ? AND hora = ?";
+        String[] whereArgs = new String[]{
+                routine.getName(),
+                routine.getDaysOfWeek(),
+                routine.getHour()
+        };
+
+        long result = db.delete("rotinas", whereClause, whereArgs);
+        return result != -1;
+    }
 }
